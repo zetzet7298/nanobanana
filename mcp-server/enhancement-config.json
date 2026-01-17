@@ -1,0 +1,228 @@
+{
+  "$schema": "./enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "default",
+
+  "globalSettings": {
+    "analyzerModel": "gemini-3-flash-preview",
+    "enhancerModel": "gemini-3-pro-image-preview",
+    "outputFormat": "png",
+    "maxConcurrentImages": 3,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN",
+    "organizeByCategory": true
+  },
+
+  "categories": {
+    "landscape": {
+      "name": "Landscape",
+      "nameVi": "Phong cảnh",
+      "keywords": [
+        "scenery",
+        "nature",
+        "mountain",
+        "forest",
+        "sunset",
+        "sunrise"
+      ],
+      "folderName": "phong-canh"
+    },
+    "portrait": {
+      "name": "Portrait",
+      "nameVi": "Chân dung",
+      "keywords": ["person", "face", "selfie", "headshot"],
+      "folderName": "chan-dung"
+    },
+    "restaurant": {
+      "name": "Restaurant",
+      "nameVi": "Nhà hàng",
+      "keywords": ["restaurant", "dining", "table", "menu", "interior"],
+      "folderName": "nha-hang"
+    },
+    "hotel": {
+      "name": "Hotel",
+      "nameVi": "Khách sạn",
+      "keywords": ["hotel", "lobby", "reception", "accommodation"],
+      "folderName": "khach-san"
+    },
+    "room": {
+      "name": "Room",
+      "nameVi": "Phòng nghỉ",
+      "keywords": ["bedroom", "bathroom", "suite", "bed", "room interior"],
+      "folderName": "phong-nghi"
+    },
+    "beach": {
+      "name": "Beach",
+      "nameVi": "Bãi biển",
+      "keywords": ["beach", "sand", "shore", "coast", "seaside"],
+      "folderName": "bai-bien"
+    },
+    "island": {
+      "name": "Island",
+      "nameVi": "Biển đảo",
+      "keywords": ["island", "sea", "ocean", "boat", "coral"],
+      "folderName": "bien-dao"
+    },
+    "tourist-attraction": {
+      "name": "Tourist Attraction",
+      "nameVi": "Điểm du lịch",
+      "keywords": ["landmark", "monument", "temple", "pagoda", "museum"],
+      "folderName": "diem-du-lich"
+    },
+    "floating-house": {
+      "name": "Floating House",
+      "nameVi": "Nhà bè",
+      "keywords": ["floating", "raft", "houseboat", "water house"],
+      "folderName": "nha-be"
+    },
+    "seafood": {
+      "name": "Seafood",
+      "nameVi": "Hải sản",
+      "keywords": ["seafood", "lobster", "crab", "shrimp", "fish", "oyster"],
+      "folderName": "hai-san"
+    },
+    "food": {
+      "name": "Food",
+      "nameVi": "Ẩm thực",
+      "keywords": ["food", "dish", "meal", "cuisine", "cooking"],
+      "folderName": "am-thuc"
+    },
+    "pool": {
+      "name": "Pool",
+      "nameVi": "Hồ bơi",
+      "keywords": ["pool", "swimming", "resort pool"],
+      "folderName": "ho-boi"
+    },
+    "activity": {
+      "name": "Activity",
+      "nameVi": "Hoạt động",
+      "keywords": [
+        "activity",
+        "tour",
+        "excursion",
+        "snorkeling",
+        "diving",
+        "kayak"
+      ],
+      "folderName": "hoat-dong"
+    },
+    "transport": {
+      "name": "Transport",
+      "nameVi": "Phương tiện",
+      "keywords": ["boat", "car", "bus", "vehicle", "speedboat"],
+      "folderName": "phuong-tien"
+    },
+    "event": {
+      "name": "Event",
+      "nameVi": "Sự kiện",
+      "keywords": ["event", "party", "wedding", "celebration", "festival"],
+      "folderName": "su-kien"
+    },
+    "product": {
+      "name": "Product",
+      "nameVi": "Sản phẩm",
+      "keywords": ["product", "item", "merchandise", "goods"],
+      "folderName": "san-pham"
+    },
+    "other": {
+      "name": "Other",
+      "nameVi": "Khác",
+      "keywords": [],
+      "folderName": "khac"
+    }
+  },
+
+  "presets": {
+    "default": {
+      "name": "Default Enhancement",
+      "description": "General purpose image enhancement for any business",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh. Hãy mô tả chi tiết:\n1. CHỦ THỂ CHÍNH: Người, vật, cảnh vật chính trong ảnh\n2. BỐI CẢNH: Địa điểm, thời gian, không gian\n3. MÀU SẮC & ÁNH SÁNG: Tone màu, nguồn sáng, độ tương phản\n4. COMPOSITION: Bố cục, góc chụp, điểm nhấn\n5. CẢM XÚC: Mood, atmosphere của ảnh\n6. ĐÁNH GIÁ: Điểm mạnh và điểm cần cải thiện\n\nTrả về JSON với format:\n{\n  \"subject\": \"\",\n  \"context\": \"\",\n  \"colors\": \"\",\n  \"composition\": \"\",\n  \"mood\": \"\",\n  \"strengths\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Dựa trên phân tích ảnh gốc, hãy tạo phiên bản cải thiện với các yêu cầu:\n- Giữ nguyên chủ thể chính và bối cảnh\n- Cải thiện ánh sáng và màu sắc cho sinh động hơn\n- Nếu ảnh trống/vắng người, thêm người phù hợp với bối cảnh\n- Người và vật phải mang đặc điểm châu Á\n- Tăng tính hấp dẫn thị giác cho mục đích marketing"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Asian",
+        "peopleStyle": "natural, authentic",
+        "colorEnhancement": "vibrant but natural",
+        "lightingStyle": "natural daylight preferred"
+      }
+    },
+
+    "tourism": {
+      "name": "Tourism & Travel",
+      "description": "Optimized for tourism and travel marketing images",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh du lịch. Hãy mô tả chi tiết:\n1. ĐIỂM ĐẾN: Loại địa điểm (biển, núi, thành phố, di tích...)\n2. HOẠT ĐỘNG: Các hoạt động du lịch có thể thực hiện\n3. THỜI ĐIỂM: Mùa, thời gian trong ngày phù hợp\n4. ĐỐI TƯỢNG: Phù hợp với đối tượng du khách nào\n5. ĐIỂM NỔI BẬT: Yếu tố độc đáo, hấp dẫn\n6. CẦN CẢI THIỆN: Những gì có thể làm ảnh hấp dẫn hơn\n\nTrả về JSON với format:\n{\n  \"destination_type\": \"\",\n  \"activities\": [],\n  \"best_time\": \"\",\n  \"target_audience\": [],\n  \"highlights\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh du lịch marketing chuyên nghiệp:\n- Tăng độ sống động và hấp dẫn của cảnh quan\n- Thêm du khách Việt Nam/châu Á nếu ảnh trống (gia đình, cặp đôi, nhóm bạn)\n- Du khách thể hiện niềm vui, sự thoải mái, đang trải nghiệm\n- Ánh sáng tự nhiên, golden hour preferred\n- Màu sắc tươi sáng nhưng chân thực\n- Composition hấp dẫn cho social media"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese/Asian",
+        "peopleStyle": "tourists enjoying activities, happy expressions",
+        "peopleTypes": [
+          "family with children",
+          "young couples",
+          "group of friends"
+        ],
+        "colorEnhancement": "vivid tropical colors",
+        "lightingStyle": "golden hour, natural sunlight"
+      }
+    },
+
+    "restaurant": {
+      "name": "Restaurant & Food",
+      "description": "Optimized for restaurant and food marketing",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh ẩm thực. Hãy mô tả:\n1. MÓN ĂN: Tên món, nguyên liệu nhìn thấy được\n2. TRÌNH BÀY: Cách bày biện, đĩa/bát sử dụng\n3. MÀU SẮC: Màu sắc món ăn, độ tươi ngon\n4. KHÔNG GIAN: Bàn ăn, background, ambiance\n5. ÁNH SÁNG: Chất lượng ảnh, lighting\n6. CẢI THIỆN: Cách làm ảnh hấp dẫn hơn\n\nTrả về JSON:\n{\n  \"dish_name\": \"\",\n  \"ingredients_visible\": [],\n  \"presentation\": \"\",\n  \"colors\": \"\",\n  \"ambiance\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh food marketing chuyên nghiệp:\n- Tăng độ tươi ngon, hấp dẫn của món ăn\n- Thêm yếu tố con người nếu phù hợp (tay đang gắp, người đang thưởng thức)\n- Người Việt Nam/châu Á\n- Ánh sáng food photography chuyên nghiệp\n- Làm nổi bật texture và màu sắc món ăn\n- Background phù hợp nhà hàng cao cấp"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": ["hands with chopsticks", "person enjoying food"],
+        "peopleEthnicity": "Vietnamese/Asian",
+        "colorEnhancement": "warm, appetizing colors",
+        "lightingStyle": "soft diffused light, food photography style"
+      }
+    },
+
+    "hotel": {
+      "name": "Hotel & Accommodation",
+      "description": "Optimized for hotel and accommodation marketing",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh khách sạn/lưu trú. Hãy mô tả:\n1. LOẠI PHÒNG: Suite, standard, view biển/núi...\n2. TIỆN NGHI: Giường, nội thất, trang thiết bị\n3. KHÔNG GIAN: Rộng/hẹp, ánh sáng, view\n4. PHONG CÁCH: Hiện đại, cổ điển, boutique...\n5. ĐIỂM NỔI BẬT: Yếu tố thu hút khách\n6. CẢI THIỆN: Cách làm ảnh hấp dẫn hơn\n\nTrả về JSON:\n{\n  \"room_type\": \"\",\n  \"amenities\": [],\n  \"space\": \"\",\n  \"style\": \"\",\n  \"highlights\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh khách sạn marketing chuyên nghiệp:\n- Tăng cảm giác ấm cúng, sang trọng\n- Thêm khách du lịch Việt Nam/châu Á nếu ảnh trống (đang thư giãn, ngắm cảnh)\n- Ánh sáng tự nhiên từ cửa sổ\n- Màu sắc ấm áp, inviting\n- Nhấn mạnh view và tiện nghi"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese/Asian",
+        "peopleStyle": "relaxed guests, enjoying amenities",
+        "colorEnhancement": "warm, inviting tones",
+        "lightingStyle": "natural window light, cozy atmosphere"
+      }
+    },
+
+    "ecommerce": {
+      "name": "E-commerce & Product",
+      "description": "Optimized for product photography and e-commerce",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh sản phẩm. Hãy mô tả:\n1. SẢN PHẨM: Loại, tên, đặc điểm\n2. GÓC CHỤP: Angle, perspective\n3. BACKGROUND: Nền, props sử dụng\n4. ÁNH SÁNG: Studio light, natural...\n5. CHI TIẾT: Texture, màu sắc, kích thước relative\n6. CẢI THIỆN: Cách làm ảnh bán hàng tốt hơn\n\nTrả về JSON:\n{\n  \"product_type\": \"\",\n  \"angle\": \"\",\n  \"background\": \"\",\n  \"lighting\": \"\",\n  \"details\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh sản phẩm e-commerce chuyên nghiệp:\n- Nền sạch sẽ, professional\n- Ánh sáng studio đều, không bóng đổ mạnh\n- Có thể thêm người mẫu châu Á sử dụng sản phẩm nếu phù hợp\n- Màu sắc chính xác, trung thực\n- Multiple angles nếu cần"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addModelIfRelevant": true,
+        "peopleEthnicity": "Vietnamese/Asian",
+        "colorEnhancement": "accurate, true to product",
+        "lightingStyle": "studio lighting, soft shadows"
+      }
+    }
+  },
+
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

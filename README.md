@@ -19,12 +19,24 @@ A professional Gemini CLI extension for generating and manipulating images using
 1. **Gemini CLI** installed and configured
 2. **Node.js 20+** and npm
 3. **API Key**: Set one of these environment variables:
+   - `OPENAI_API_BASE` + `OPENAI_API_KEY` (for local proxy - highest priority)
    - `NANOBANANA_GEMINI_API_KEY` (recommended for Gemini API key users who
      normally authenticate to Gemini CLI using the "Login with Google" option)
    - `NANOBANANA_GOOGLE_API_KEY` (recommended for Vertex API key users who
      normally authenticate to Gemini CLI using the "Login with Google" option)
    - `GEMINI_API_KEY` (fallback)
    - `GOOGLE_API_KEY` (fallback)
+
+### Local Proxy Mode
+
+To use a local proxy server (e.g., CLIProxyAPI) instead of the Gemini API directly:
+
+```bash
+export OPENAI_API_BASE="http://localhost:8317"
+export OPENAI_API_KEY="your-proxy-api-key"
+```
+
+The extension will automatically use the `/v1beta` Gemini-compatible API endpoints and detect available image models via `/v1/models`.
 
 For authentication setup, see the [official Gemini CLI documentation](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/authentication.md).
 

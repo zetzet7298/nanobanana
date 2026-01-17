@@ -1,0 +1,500 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "description": "Example outputs for each content type - Use as reference",
+    "updated": "2025-12"
+  },
+
+  "examples": {
+    "blog_post": {
+      "content_type": "blog_post",
+      "platform": "website",
+      "content": {
+        "title": "Top 10 Điểm Check-in Đẹp Nhất Đảo Bình Hưng 2025",
+        "slug": "top-10-diem-check-in-dep-nhat-dao-binh-hung-2025",
+        "excerpt": "Khám phá những góc chụp ảnh tuyệt đẹp tại đảo Bình Hưng - từ Bãi Đá Trứng độc đáo đến Hòn Sam lặn ngắm san hô.",
+        "featured_image": {
+          "prompt": "Aerial drone view of Binh Hung island Vietnam, turquoise crystal clear water, white sand beach, traditional fishing boats, lush green mountains, golden hour lighting, travel photography, 4K quality",
+          "alt_text": "Toàn cảnh đảo Bình Hưng nhìn từ trên cao với nước biển xanh ngọc",
+          "dimensions": "1200x630"
+        },
+        "body": [
+          {
+            "type": "paragraph",
+            "content": "Đảo Bình Hưng - viên ngọc ẩn của Cam Ranh đang trở thành điểm đến hot nhất 2025 cho những tín đồ du lịch săn ảnh đẹp. Với hệ sinh thái biển đảo còn nguyên sơ và những góc check-in độc nhất vô nhị, Bình Hưng hứa hẹn sẽ cho bạn những bức ảnh triệu like."
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "content": "1. Bãi Đá Trứng - Điểm Check-in Số 1 Bình Hưng"
+          },
+          {
+            "type": "paragraph",
+            "content": "Bãi Đá Trứng nổi tiếng với hàng ngàn hòn đá tròn trịa như những quả trứng khổng lồ. Đây là kỳ quan thiên nhiên độc đáo mà bạn khó tìm thấy ở bất cứ đâu khác tại Việt Nam."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Thời điểm chụp đẹp nhất: 6h-8h sáng hoặc 4h-6h chiều",
+              "Tips: Mặc đồ màu trắng hoặc pastel để nổi bật trên nền đá",
+              "Lưu ý: Đá có thể trơn, mang giày bám tốt"
+            ]
+          },
+          {
+            "type": "heading",
+            "level": 2,
+            "content": "2. Hòn Sam - Thiên Đường San Hô"
+          },
+          {
+            "type": "paragraph",
+            "content": "Với hơn 50 loài san hô đa dạng và làn nước trong vắt độ sâu 15-20m, Hòn Sam là địa điểm lý tưởng để lặn ngắm san hô và chụp ảnh underwater."
+          },
+          {
+            "type": "cta",
+            "content": "📞 Đặt tour Bình Hưng ngay: 0942 704 480 | 💬 Zalo: 0357 400 381"
+          }
+        ],
+        "seo": {
+          "meta_title": "Top 10 Điểm Check-in Đẹp Nhất Đảo Bình Hưng 2025 | Hồng Nhàn Tour",
+          "meta_description": "Khám phá những góc chụp ảnh tuyệt đẹp tại đảo Bình Hưng - từ Bãi Đá Trứng độc đáo đến Hòn Sam lặn ngắm san hô. Cập nhật mới nhất 2025!",
+          "keywords": [
+            "điểm check-in Bình Hưng",
+            "du lịch Bình Hưng 2025",
+            "Bãi Đá Trứng Bình Hưng",
+            "Hòn Sam lặn san hô",
+            "tour Bình Hưng",
+            "Hồng Nhàn Tour"
+          ],
+          "canonical_url": "https://hongnhanbinhhung.com/blog/top-10-diem-check-in-dep-nhat-dao-binh-hung-2025"
+        },
+        "schema_markup": {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "Top 10 Điểm Check-in Đẹp Nhất Đảo Bình Hưng 2025",
+          "author": {
+            "@type": "Organization",
+            "name": "Hồng Nhàn Tour"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "Hồng Nhàn Tour",
+            "url": "https://hongnhanbinhhung.com"
+          }
+        }
+      },
+      "metadata": {
+        "author": "Hồng Nhàn Tour",
+        "category": "Cẩm Nang Du Lịch",
+        "tags": [
+          "Bình Hưng",
+          "check-in",
+          "du lịch biển",
+          "Cam Ranh",
+          "Khánh Hòa"
+        ],
+        "reading_time_minutes": 8
+      }
+    },
+
+    "instagram_reel": {
+      "content_type": "reel",
+      "platform": "instagram_reel",
+      "video": {
+        "concept": {
+          "title": "Hidden Paradise Vietnam - Bình Hưng Island",
+          "hook": "POV: Bạn vừa phát hiện ra Maldives của Việt Nam 🏝️✨",
+          "story_type": "showcase",
+          "mood": "dreamy, adventurous",
+          "target_emotion": "wanderlust, FOMO"
+        },
+        "script": [
+          {
+            "timestamp": "00:00",
+            "duration_seconds": 3,
+            "scene_description": "Hook - Text overlay với cảnh drone bay qua đảo",
+            "visual": "Drone shot - bay từ biển vào đảo Bình Hưng, nước xanh ngọc",
+            "audio": "Trending sound - dramatic reveal",
+            "text_overlay": "POV: Bạn vừa phát hiện ra thiên đường ẩn giữa Việt Nam 🏝️",
+            "transition": "zoom"
+          },
+          {
+            "timestamp": "00:03",
+            "duration_seconds": 4,
+            "scene_description": "Montage các cảnh đẹp",
+            "visual": "Quick cuts: Bãi Đá Trứng, bơi biển, tôm hùm nướng, hoàng hôn",
+            "audio": "Beat drop",
+            "text_overlay": "Đảo Bình Hưng - Cam Ranh",
+            "transition": "swipe"
+          },
+          {
+            "timestamp": "00:07",
+            "duration_seconds": 5,
+            "scene_description": "Highlight trải nghiệm",
+            "visual": "Lặn ngắm san hô, ăn hải sản trên bè, check-in Bãi Đá Trứng",
+            "audio": "Continue music",
+            "text_overlay": "San hô • Hải sản • Check-in cực chill",
+            "transition": "fade"
+          },
+          {
+            "timestamp": "00:12",
+            "duration_seconds": 3,
+            "scene_description": "CTA ending",
+            "visual": "Logo Hồng Nhàn Tour + cảnh hoàng hôn",
+            "audio": "Fade out",
+            "text_overlay": "Đặt tour: 0942 704 480 🌊",
+            "transition": "none"
+          }
+        ],
+        "specs": {
+          "duration_seconds": 15,
+          "aspect_ratio": "9:16",
+          "resolution": "1080x1920",
+          "fps": 30,
+          "format": "mp4"
+        },
+        "audio": {
+          "type": "trending_sound",
+          "music_suggestion": "Trending travel reveal sound / Chill beach vibes",
+          "voiceover_script": null
+        }
+      },
+      "post_details": {
+        "caption": "POV: Bạn vừa tìm thấy Maldives Việt Nam mà chưa ai biết 🏝️✨\n\nĐảo Bình Hưng - chỉ cách Nha Trang 2 tiếng mà đẹp như thiên đường:\n🌊 Nước trong vắt nhìn thấy đáy\n🐚 San hô nguyên sơ 50+ loài\n🦞 Tôm hùm tươi sống nướng tại chỗ\n📸 Bãi Đá Trứng check-in cực đỉnh\n\n💰 Tour 1 ngày chỉ từ 490k!\n📞 Đặt ngay: 0942 704 480\n💬 Zalo: 0357 400 381\n\nSave lại rồi đi thôi! 💙\n\n#binhhung #binhtien #dulichvietnam #vietnamtravel #hiddenparadise #beachlife #islandlife #camranh #khanhhoa #travelvietnam #exploreVietnam #travelreels #vietnamisland",
+        "hashtags": [
+          "#binhhung",
+          "#binhtien",
+          "#dulichvietnam",
+          "#vietnamtravel",
+          "#hiddenparadise",
+          "#beachlife",
+          "#islandlife",
+          "#camranh",
+          "#khanhhoa",
+          "#travelvietnam"
+        ],
+        "cover_frame": {
+          "timestamp": "00:02",
+          "custom_thumbnail_prompt": "Aerial view of Binh Hung island turquoise water white sand beach Vietnam travel photography vibrant colors"
+        }
+      }
+    },
+
+    "facebook_post": {
+      "content_type": "post",
+      "platform": "facebook_page",
+      "content": {
+        "caption": "🌴 FLASH SALE - Tour Đảo Bình Hưng Cuối Tuần 🌴\n\nĐừng bỏ lỡ cơ hội khám phá \"Maldives Việt Nam\" với mức giá cực sốc!\n\n🎯 GÓI TOUR 1 NGÀY - Chỉ 490.000đ/người:\n✅ Tàu đáy kính khám phá đảo\n✅ Lặn ngắm san hô tại Hòn Sam\n✅ BBQ hải sản thịnh soạn (có tôm hùm!)\n✅ Tham quan Bãi Đá Trứng\n✅ Hướng dẫn viên bản địa\n\n📅 Áp dụng: Thứ 7 & Chủ Nhật tuần này\n👥 Nhóm từ 4 người - GIẢM THÊM 10%\n\n📞 ĐẶT NGAY: 0942 704 480\n💬 Inbox hoặc Zalo: 0357 400 381\n🌐 Website: hongnhanbinhhung.com\n\n⏰ Số lượng có hạn - Đặt trước giữ chỗ!\n\n#HongNhanTour #BinhHung #TourBinhHung #FlashSale #DuLichBienDao #CamRanh #KhanhHoa #WeekendGetaway",
+        "caption_short": "🌴 FLASH SALE Tour Bình Hưng chỉ 490k! Lặn san hô + BBQ tôm hùm 🦞",
+        "hashtags": [
+          "#HongNhanTour",
+          "#BinhHung",
+          "#TourBinhHung",
+          "#FlashSale",
+          "#DuLichBienDao",
+          "#CamRanh",
+          "#KhanhHoa",
+          "#WeekendGetaway"
+        ],
+        "mentions": [],
+        "cta": {
+          "text": "Đặt Tour Ngay",
+          "url": "https://hongnhanbinhhung.com/tour/tour-1-ngay",
+          "button_type": "book_now"
+        },
+        "location": {
+          "name": "Đảo Bình Hưng, Cam Ranh, Khánh Hòa",
+          "coordinates": {
+            "lat": 11.6725,
+            "lng": 109.2567
+          }
+        }
+      },
+      "media": {
+        "type": "carousel",
+        "items": [
+          {
+            "prompt": "Promotional banner for island tour Vietnam, turquoise sea, golden beach, lobster BBQ, snorkeling, modern travel agency style, vibrant colors, text overlay space",
+            "alt_text": "Banner Flash Sale Tour Đảo Bình Hưng",
+            "dimensions": "1200x630",
+            "aspect_ratio": "1.91:1"
+          },
+          {
+            "prompt": "Tourists snorkeling in crystal clear water Vietnam island, colorful coral reef, underwater photography",
+            "alt_text": "Lặn ngắm san hô tại Hòn Sam",
+            "dimensions": "1200x630",
+            "aspect_ratio": "1.91:1"
+          },
+          {
+            "prompt": "Fresh lobster BBQ on floating restaurant Vietnam, seafood feast, ocean view, appetizing food photography",
+            "alt_text": "BBQ tôm hùm tươi sống",
+            "dimensions": "1200x630",
+            "aspect_ratio": "1.91:1"
+          }
+        ]
+      },
+      "platform_specs": {
+        "boost_eligible": true,
+        "target_audience": "Người quan tâm du lịch, 25-45 tuổi, sống tại TP.HCM, Hà Nội, miền Nam"
+      },
+      "schedule": {
+        "publish_date": "2025-01-10T08:00:00+07:00",
+        "timezone": "Asia/Ho_Chi_Minh",
+        "best_time_slot": "8:00 - 10:00 sáng hoặc 19:00 - 21:00 tối"
+      }
+    },
+
+    "tiktok_video": {
+      "content_type": "tiktok",
+      "platform": "tiktok",
+      "video": {
+        "concept": {
+          "title": "Đi Bình Hưng ăn tôm hùm giá rẻ",
+          "hook": "Đi biển mà ăn tôm hùm chỉ có 200k? 🦞",
+          "story_type": "tutorial",
+          "mood": "fun, informative",
+          "target_emotion": "curiosity, craving"
+        },
+        "script": [
+          {
+            "timestamp": "00:00",
+            "duration_seconds": 2,
+            "scene_description": "Hook gây tò mò",
+            "visual": "Close-up tôm hùm đang nướng",
+            "audio": "Trending sound với text-to-speech",
+            "text_overlay": "Đi biển ăn tôm hùm chỉ 200k? 🤯",
+            "transition": "cut"
+          },
+          {
+            "timestamp": "00:02",
+            "duration_seconds": 3,
+            "scene_description": "Giới thiệu địa điểm",
+            "visual": "Cảnh đảo Bình Hưng từ xa + đi tàu",
+            "audio": "Music continues",
+            "text_overlay": "Đảo Bình Hưng - Cam Ranh\nChỉ 2 tiếng từ Nha Trang",
+            "transition": "swipe"
+          },
+          {
+            "timestamp": "00:05",
+            "duration_seconds": 5,
+            "scene_description": "Show thức ăn",
+            "visual": "Bàn ăn đầy hải sản: tôm hùm, ghẹ, cá, ốc",
+            "audio": "Beat drop + eating sounds",
+            "text_overlay": "Bữa trưa trong tour\n- Tôm hùm 200g\n- Ghẹ hấp\n- Cá nướng\n- 3 loại ốc",
+            "transition": "zoom"
+          },
+          {
+            "timestamp": "00:10",
+            "duration_seconds": 3,
+            "scene_description": "CTA",
+            "visual": "Mình đang ăn + logo tour",
+            "audio": "Fade music",
+            "text_overlay": "Tour 1 ngày: 490k\nĐặt: 0942 704 480\nFollow để xem thêm! 🏝️",
+            "transition": "none"
+          }
+        ],
+        "specs": {
+          "duration_seconds": 13,
+          "aspect_ratio": "9:16",
+          "resolution": "1080x1920",
+          "fps": 30,
+          "format": "mp4"
+        },
+        "audio": {
+          "type": "trending_sound",
+          "music_suggestion": "Trending food/travel sound, hoặc sound viral về ăn uống",
+          "voiceover_script": null
+        }
+      },
+      "post_details": {
+        "caption": "Reply @[user] Đi Bình Hưng ăn tôm hùm giá sinh viên 🦞\n\nTour 1 ngày chỉ 490k mà được:\n✅ Tàu đưa đón\n✅ Lặn san hô\n✅ BBQ hải sản (có tôm hùm!)\n✅ Đi Bãi Đá Trứng\n\nComment \"TOUR\" để mình gửi thông tin chi tiết!\n\n📞 0942 704 480\n\n#binhhung #tomhum #dulichvietnam #angi #foodtour #traveltiktok #vietnam #beachvibes #seafood #camranh",
+        "hashtags": [
+          "#binhhung",
+          "#tomhum",
+          "#dulichvietnam",
+          "#angi",
+          "#foodtour",
+          "#traveltiktok",
+          "#vietnam",
+          "#beachvibes",
+          "#seafood",
+          "#camranh"
+        ]
+      }
+    },
+
+    "carousel": {
+      "content_type": "carousel",
+      "platform": "instagram_carousel",
+      "slides": [
+        {
+          "slide_number": 1,
+          "type": "cover",
+          "image_prompt": "Elegant travel carousel cover slide, 'Top 5 Món Hải Sản Phải Thử Ở Bình Hưng' title, lobster and seafood background, modern typography, beach vibes, blue and gold color scheme",
+          "headline": "Top 5 Món Hải Sản\nPhải Thử Ở Bình Hưng",
+          "body_text": null,
+          "cta_text": "Swipe để xem →"
+        },
+        {
+          "slide_number": 2,
+          "type": "content",
+          "image_prompt": "Grilled lobster with garlic butter on wooden plate, Vietnamese style, beach restaurant setting, food photography, appetizing, warm lighting",
+          "headline": "1. Tôm Hùm Nướng Bơ Tỏi 🦞",
+          "body_text": "Đặc sản số 1 của Bình Hưng!\nTôm hùm tươi sống nướng trực tiếp,\nthịt chắc ngọt, thơm lừng bơ tỏi.",
+          "cta_text": null
+        },
+        {
+          "slide_number": 3,
+          "type": "content",
+          "image_prompt": "Steamed crab with ginger on plate, Vietnamese seafood, fresh blue crab, restaurant setting, food photography",
+          "headline": "2. Ghẹ Hấp Gừng 🦀",
+          "body_text": "Ghẹ biển Cam Ranh nổi tiếng\nvới thịt ngọt tự nhiên.\nHấp gừng giữ trọn vị tươi!",
+          "cta_text": null
+        },
+        {
+          "slide_number": 4,
+          "type": "content",
+          "image_prompt": "Sea urchin grilled with butter egg, Vietnamese style cau gai nuong trung, beach restaurant, food photography",
+          "headline": "3. Cầu Gai Nướng Trứng",
+          "body_text": "Béo ngậy, thơm ngon!\nMón hiếm chỉ có ở đảo,\nchế biến đơn giản nhưng cực kỳ lạ miệng.",
+          "cta_text": null
+        },
+        {
+          "slide_number": 5,
+          "type": "content",
+          "image_prompt": "Grilled fish wrapped in banana leaf, Vietnamese style ca nuong la chuoi, whole fish, herbs, food photography",
+          "headline": "4. Cá Nướng Lá Chuối",
+          "body_text": "Cá biển tươi nướng trong lá chuối,\nthịt mềm thấm đều gia vị.\nĂn kèm bánh tráng cuốn là tuyệt!",
+          "cta_text": null
+        },
+        {
+          "slide_number": 6,
+          "type": "cta",
+          "image_prompt": "Seafood feast on floating restaurant Vietnam, lobster crab fish, ocean view, sunset, inviting atmosphere",
+          "headline": "Thưởng Thức Tại\nNhà Bè Hồng Nhàn 🌊",
+          "body_text": "Đặt tour để trải nghiệm\ntrọn vẹn ẩm thực Bình Hưng!",
+          "cta_text": "📞 0942 704 480\n💬 Zalo: 0357 400 381"
+        }
+      ],
+      "post_details": {
+        "caption": "🦞 TOP 5 MÓN HẢI SẢN PHẢI THỬ Ở BÌNH HƯNG 🦞\n\nĐến Bình Hưng mà không ăn mấy món này thì... uổng phí chuyến đi!\n\n1️⃣ Tôm Hùm Nướng Bơ Tỏi - Đặc sản số 1\n2️⃣ Ghẹ Hấp Gừng - Ngọt tự nhiên\n3️⃣ Cầu Gai Nướng Trứng - Lạ miệng cực!\n4️⃣ Cá Nướng Lá Chuối - Thơm nức mũi\n5️⃣ Bonus: Ốc hương nướng mỡ hành 🐚\n\nTất cả đều có trong tour của Hồng Nhàn nhé!\n\n💰 Tour 1 ngày từ 490k (có tôm hùm!)\n📞 Đặt tour: 0942 704 480\n💬 Zalo: 0357 400 381\n\nSave lại đi biển ăn sập đảo! 🏝️\n\n#binhhung #haisan #tomhum #dulichvietnam #foodie #vietnamfood #seafoodlover #camranh #travelfood",
+        "hashtags": [
+          "#binhhung",
+          "#haisan",
+          "#tomhum",
+          "#dulichvietnam",
+          "#foodie",
+          "#vietnamfood",
+          "#seafoodlover",
+          "#camranh",
+          "#travelfood"
+        ]
+      },
+      "specs": {
+        "aspect_ratio": "1:1",
+        "dimensions": "1080x1080"
+      }
+    },
+
+    "facebook_ad": {
+      "ad_type": "conversion",
+      "platform": "facebook_ads",
+      "ad_content": {
+        "headlines": [
+          {
+            "text": "Tour Bình Hưng Từ 490k",
+            "character_count": 21
+          },
+          {
+            "text": "Đảo Thiên Đường Cam Ranh",
+            "character_count": 23
+          },
+          {
+            "text": "Lặn San Hô + Tôm Hùm",
+            "character_count": 20
+          }
+        ],
+        "descriptions": [
+          {
+            "text": "BBQ hải sản. Hướng dẫn bản địa.",
+            "character_count": 30
+          },
+          {
+            "text": "Đặt tour online. Phản hồi 5 phút.",
+            "character_count": 31
+          }
+        ],
+        "primary_text": "🏝️ Khám phá Đảo Bình Hưng - \"Maldives Việt Nam\" chỉ cách Nha Trang 2 tiếng!\n\n✨ Tour 1 ngày từ 490.000đ bao gồm:\n• Tàu đáy kính tham quan\n• Lặn ngắm san hô 50+ loài\n• BBQ hải sản + Tôm hùm nướng\n• Check-in Bãi Đá Trứng\n\n⭐ 1000+ đánh giá 5 sao\n📞 Hotline: 0942 704 480\n\n👉 Đặt ngay - Số lượng có hạn!",
+        "cta_button": "Book Now",
+        "display_url": "hongnhanbinhhung.com",
+        "final_url": "https://hongnhanbinhhung.com/tour/tour-1-ngay?utm_source=facebook&utm_medium=ads&utm_campaign=conversion_jan25"
+      },
+      "creative": {
+        "image_prompt": "Vietnam island tourism promotional image, aerial view turquoise water, white beach, lobster BBQ, snorkeling, happy tourists, vibrant colors, professional travel photography, text overlay area on left side",
+        "video_concept": "15-second video showing: drone shot of island → tourists arriving by boat → snorkeling underwater → BBQ seafood → sunset on beach → CTA with logo",
+        "specs": {
+          "format": "image or video",
+          "dimensions": "1080x1080"
+        }
+      },
+      "targeting_suggestion": {
+        "audience": "Người yêu thích du lịch, biển đảo, hải sản",
+        "interests": [
+          "Du lịch",
+          "Biển đảo",
+          "Hải sản",
+          "Nha Trang",
+          "Cam Ranh",
+          "Travel photography",
+          "Beach vacation"
+        ],
+        "demographics": "25-45 tuổi, nam/nữ, thu nhập trung bình-khá",
+        "locations": [
+          "TP. Hồ Chí Minh",
+          "Hà Nội",
+          "Đà Nẵng",
+          "Bình Dương",
+          "Đồng Nai"
+        ]
+      }
+    },
+
+    "google_ads": {
+      "ad_type": "consideration",
+      "platform": "google_ads",
+      "ad_content": {
+        "headlines": [
+          { "text": "Tour Đảo Bình Hưng Từ 490k", "character_count": 25 },
+          { "text": "Lặn San Hô + Tôm Hùm BBQ", "character_count": 24 },
+          { "text": "Đảo Thiên Đường Cam Ranh", "character_count": 23 },
+          { "text": "Hướng Dẫn Viên Bản Địa", "character_count": 22 },
+          { "text": "Đặt Tour Online 24/7", "character_count": 20 },
+          { "text": "Phản Hồi Trong 5 Phút", "character_count": 21 }
+        ],
+        "descriptions": [
+          {
+            "text": "Tour Bình Hưng 1 ngày từ 490k. Lặn san hô, BBQ tôm hùm, check-in Bãi Đá Trứng. Đặt ngay!",
+            "character_count": 87
+          },
+          {
+            "text": "Khám phá đảo hoang sơ Cam Ranh. Hải sản tươi sống, hướng dẫn viên bản địa. Hotline 0942704480",
+            "character_count": 89
+          }
+        ],
+        "display_url": "hongnhanbinhhung.com/tour",
+        "final_url": "https://hongnhanbinhhung.com/tour?utm_source=google&utm_medium=search&utm_campaign=brand_jan25"
+      },
+      "targeting_suggestion": {
+        "keywords": [
+          "tour bình hưng",
+          "du lịch bình hưng",
+          "đảo bình hưng cam ranh",
+          "tour bình hưng 1 ngày",
+          "bình hưng 2 ngày 1 đêm",
+          "lặn san hô bình hưng",
+          "hải sản bình hưng"
+        ],
+        "locations": ["Vietnam", "Ho Chi Minh City", "Hanoi"]
+      }
+    }
+  }
+}

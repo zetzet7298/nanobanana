@@ -1,0 +1,85 @@
+{
+  "$schema": "./enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "hongnhan-tourism",
+
+  "globalSettings": {
+    "analyzerModel": "gemini-2.5-flash",
+    "enhancerModel": "gemini-2.5-flash-image",
+    "outputFormat": "png",
+    "maxConcurrentImages": 3,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN"
+  },
+
+  "presets": {
+    "hongnhan-tourism": {
+      "name": "Hồng Nhàn Tour - Du lịch Bình Hưng",
+      "description": "Preset tối ưu cho ảnh marketing du lịch biển đảo Bình Hưng - Bình Tiên, Cam Ranh, Khánh Hòa",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh du lịch biển đảo Việt Nam. Đây là ảnh từ đảo Bình Hưng hoặc Bình Tiên (Cam Ranh, Khánh Hòa).\n\nHãy phân tích chi tiết:\n1. LOẠI ẢNH: Phong cảnh biển, bãi tắm, nhà hàng, khách sạn, hải sản, hoạt động du lịch?\n2. ĐẶC ĐIỂM ĐỊA PHƯƠNG: Có thể nhận diện được địa điểm nào? (Bãi Đá Trứng, Hòn Sam, Bãi Bà Bóng...)\n3. NGƯỜI & HOẠT ĐỘNG: Có du khách không? Đang làm gì? (tắm biển, lặn san hô, ăn hải sản...)\n4. ĐỘ HẤP DẪN: Mức độ thu hút của ảnh cho mục đích marketing du lịch\n5. ĐIỂM CẦN CẢI THIỆN: Ảnh thiếu gì để trở nên sinh động và hấp dẫn hơn?\n\nTrả về JSON:\n{\n  \"image_type\": \"\",\n  \"location_features\": [],\n  \"people_present\": true/false,\n  \"activities\": [],\n  \"appeal_score\": 1-10,\n  \"improvements\": []\n}",
+        "enhancement": "Tạo phiên bản cải thiện của ảnh du lịch Bình Hưng/Bình Tiên với các yêu cầu:\n\n## BẮT BUỘC:\n- Giữ nguyên đặc trưng cảnh quan biển đảo Việt Nam\n- Màu nước biển xanh ngọc đặc trưng của Bình Hưng\n- Ánh sáng tự nhiên, golden hour nếu phù hợp\n\n## NẾU ẢNH TRỐNG/VẮNG NGƯỜI:\n- Thêm du khách Việt Nam:\n  + Gia đình có con nhỏ (đang chơi đùa, xây lâu đài cát)\n  + Cặp đôi trẻ (đang selfie, đi dạo)\n  + Nhóm bạn (đang tắm biển, chụp ảnh)\n- Du khách mặc đồ du lịch biển: áo phao, bikini, đồ bơi\n- Biểu cảm vui vẻ, thoải mái, đang tận hưởng\n\n## NẾU ẢNH HẢI SẢN/ẨM THỰC:\n- Tăng độ tươi ngon, hấp dẫn\n- Có thể thêm tay đang gắp/người đang thưởng thức\n- Ánh sáng food photography\n\n## NẾU ẢNH KHÁCH SẠN/PHÒNG:\n- Tăng cảm giác ấm cúng, sang trọng\n- Thêm khách du lịch đang thư giãn nếu phù hợp\n- Nhấn mạnh view biển\n\n## PHONG CÁCH CHUNG:\n- Màu sắc tươi sáng, tropical vibes\n- Phù hợp đăng Facebook, Instagram, TikTok\n- Chất lượng cao cho in ấn marketing"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "tourists enjoying beach activities, happy expressions, casual beach wear",
+        "peopleTypes": [
+          "family with young children playing on beach",
+          "young couple taking selfie",
+          "group of friends swimming",
+          "solo female traveler"
+        ],
+        "colorEnhancement": "vivid tropical colors, turquoise sea, golden sand",
+        "lightingStyle": "natural sunlight, golden hour preferred"
+      }
+    },
+
+    "hongnhan-seafood": {
+      "name": "Hồng Nhàn - Hải sản & Nhà hàng",
+      "description": "Preset cho ảnh hải sản, món ăn, nhà bè nổi Hồng Nhàn",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích ảnh ẩm thực hải sản. Đây là hình ảnh từ nhà hàng/nhà bè Hồng Nhàn tại Bình Hưng.\n\nPhân tích:\n1. MÓN ĂN: Loại món (tôm hùm, ghẹ, cá, ốc, lẩu...)\n2. TRÌNH BÀY: Cách bày biện, đĩa/bát\n3. ĐỘ TƯƠI: Đánh giá độ tươi ngon qua màu sắc\n4. KHÔNG GIAN: Background (nhà bè, view biển?)\n5. CẢI THIỆN: Làm thế nào để ảnh hấp dẫn hơn?\n\nTrả về JSON:\n{\n  \"dish_type\": \"\",\n  \"main_ingredients\": [],\n  \"presentation_score\": 1-10,\n  \"freshness_indicators\": [],\n  \"ambiance\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh hải sản marketing chuyên nghiệp cho Nhà hàng Hồng Nhàn:\n\n## MÓN HẢI SẢN:\n- Tăng độ tươi ngon: màu tôm hùm đỏ cam, ghẹ cam đậm\n- Hải sản phải trông bóng mọng, tươi sống\n- Có thể thêm hơi nóng bốc lên\n\n## YẾU TỐ CON NGƯỜI:\n- Tay người Việt đang gắp thức ăn bằng đũa\n- Hoặc người đang thưởng thức, khuôn mặt hài lòng\n- Không bắt buộc nếu ảnh close-up món ăn\n\n## BACKGROUND:\n- Nhà bè nổi, view biển nếu phù hợp\n- Không gian ấm cúng\n\n## ÁNH SÁNG:\n- Soft diffused light kiểu food photography\n- Màu ấm áp, appetizing"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": [
+          "Vietnamese hands using chopsticks",
+          "person enjoying meal with satisfied expression"
+        ],
+        "peopleEthnicity": "Vietnamese",
+        "colorEnhancement": "warm appetizing colors, red-orange seafood tones",
+        "lightingStyle": "soft diffused food photography lighting"
+      }
+    },
+
+    "hongnhan-hotel": {
+      "name": "Hồng Nhàn - Khách sạn",
+      "description": "Preset cho ảnh khách sạn Hồng Nhàn 2, 3, 5",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích ảnh khách sạn/lưu trú. Đây là hình ảnh từ khách sạn Hồng Nhàn tại Bình Hưng.\n\nPhân tích:\n1. LOẠI PHÒNG: Standard, đôi, suite?\n2. TIỆN NGHI: Giường, tivi, điều hòa, ban công?\n3. VIEW: Có view biển không?\n4. PHONG CÁCH: Hiện đại, đơn giản, ấm cúng?\n5. CẢI THIỆN: Làm gì để ảnh thu hút khách đặt phòng hơn?\n\nTrả về JSON:\n{\n  \"room_type\": \"\",\n  \"amenities\": [],\n  \"has_sea_view\": true/false,\n  \"style\": \"\",\n  \"appeal_score\": 1-10,\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh khách sạn marketing cho Hồng Nhàn:\n\n## KHÔNG GIAN:\n- Phòng sạch sẽ, gọn gàng, sáng sủa\n- Giường được làm phẳng, gối xếp đẹp\n- Tăng cảm giác thoáng mát, thoải mái\n\n## THÊM NGƯỜI NẾU PHÙ HỢP:\n- Khách du lịch Việt đang thư giãn trên giường\n- Cặp đôi đang ngắm view từ ban công\n- Gia đình đang chuẩn bị đi biển\n\n## VIEW:\n- Nhấn mạnh view biển nếu có\n- Ánh sáng tự nhiên từ cửa sổ\n\n## TONE:\n- Ấm áp, inviting, nghỉ dưỡng\n- Phù hợp booking online"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "relaxed hotel guests in casual clothes",
+        "peopleTypes": [
+          "couple enjoying sea view from balcony",
+          "family preparing for beach day",
+          "solo traveler relaxing on bed"
+        ],
+        "colorEnhancement": "warm inviting tones, bright natural colors",
+        "lightingStyle": "natural window light, cozy atmosphere"
+      }
+    }
+  },
+
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

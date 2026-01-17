@@ -1,0 +1,174 @@
+{
+  "$schema": "../../../mcp-server/enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "restaurant-fine-dining",
+  
+  "globalSettings": {
+    "analyzerModel": "gemini-2.5-flash",
+    "enhancerModel": "gemini-2.5-flash-image",
+    "outputFormat": "png",
+    "maxConcurrentImages": 3,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN",
+    "organizeByCategory": true
+  },
+
+  "categories": {
+    "food-main": {
+      "name": "Main Dishes",
+      "nameVi": "Món chính",
+      "keywords": ["main course", "entree", "steak", "fish", "chicken", "pork", "beef"],
+      "folderName": "mon-chinh"
+    },
+    "food-appetizer": {
+      "name": "Appetizers",
+      "nameVi": "Khai vị",
+      "keywords": ["appetizer", "starter", "salad", "soup"],
+      "folderName": "khai-vi"
+    },
+    "food-dessert": {
+      "name": "Desserts",
+      "nameVi": "Tráng miệng",
+      "keywords": ["dessert", "cake", "ice cream", "sweet"],
+      "folderName": "trang-mieng"
+    },
+    "drinks": {
+      "name": "Drinks",
+      "nameVi": "Đồ uống",
+      "keywords": ["drink", "beverage", "cocktail", "wine", "coffee", "juice"],
+      "folderName": "do-uong"
+    },
+    "interior": {
+      "name": "Interior",
+      "nameVi": "Nội thất",
+      "keywords": ["interior", "dining room", "decoration", "ambiance"],
+      "folderName": "noi-that"
+    },
+    "exterior": {
+      "name": "Exterior",
+      "nameVi": "Mặt tiền",
+      "keywords": ["exterior", "facade", "entrance", "signage"],
+      "folderName": "mat-tien"
+    },
+    "kitchen": {
+      "name": "Kitchen",
+      "nameVi": "Bếp",
+      "keywords": ["kitchen", "chef", "cooking", "preparation"],
+      "folderName": "bep"
+    },
+    "service": {
+      "name": "Service",
+      "nameVi": "Phục vụ",
+      "keywords": ["waiter", "staff", "service", "serving"],
+      "folderName": "phuc-vu"
+    },
+    "event": {
+      "name": "Events",
+      "nameVi": "Sự kiện",
+      "keywords": ["event", "party", "wedding", "celebration", "birthday"],
+      "folderName": "su-kien"
+    },
+    "other": {
+      "name": "Other",
+      "nameVi": "Khác",
+      "keywords": [],
+      "folderName": "khac"
+    }
+  },
+  
+  "presets": {
+    "restaurant-fine-dining": {
+      "name": "Nhà hàng cao cấp",
+      "description": "Preset cho nhà hàng fine dining, ẩm thực cao cấp",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh ẩm thực fine dining. Phân tích:\n1. MÓN ĂN: Tên món, cuisine (Việt, Âu, Á, Fusion?)\n2. PRESENTATION: Cách trình bày, plating technique\n3. NGUYÊN LIỆU: Ingredients nhìn thấy được, chất lượng\n4. TABLEWARE: Đĩa, bát, dao nĩa, ly\n5. AMBIANCE: Background, ánh sáng, không gian\n6. PROFESSIONAL: Đạt chuẩn fine dining không?\n\nTrả về JSON:\n{\n  \"dish_name\": \"\",\n  \"cuisine_type\": \"\",\n  \"plating_style\": \"\",\n  \"visible_ingredients\": [],\n  \"tableware_quality\": \"\",\n  \"ambiance\": \"\",\n  \"fine_dining_score\": 1-10,\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh fine dining marketing đẳng cấp:\n\n## MÓN ĂN:\n- Tăng độ tinh tế, nghệ thuật trong trình bày\n- Màu sắc sống động, appetizing\n- Chi tiết rõ nét, texture hấp dẫn\n- Hơi khói/steam nếu món nóng\n\n## TABLEWARE:\n- Đĩa sứ trắng cao cấp hoặc slate plates\n- Dao nĩa bóng loáng\n- Ly rượu vang nếu phù hợp\n\n## YẾU TỐ CON NGƯỜI:\n- Tay người Việt đang cắt món ăn\n- Sommelier rót rượu\n- Cặp đôi elegant đang dùng bữa\n- Chef plating trong bếp\n\n## ÁNH SÁNG:\n- Moody, dramatic lighting\n- Candle light ambiance\n- Soft focus background\n\n## STYLE:\n- Magazine-worthy food photography\n- Michelin-star quality presentation"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": [
+          "elegant hands cutting steak with knife and fork",
+          "sommelier pouring wine",
+          "chef hands plating food",
+          "couple toasting with wine glasses"
+        ],
+        "peopleEthnicity": "Vietnamese/Asian",
+        "colorEnhancement": "rich, sophisticated, warm tones",
+        "lightingStyle": "moody dramatic lighting, candle ambiance"
+      }
+    },
+    
+    "restaurant-casual": {
+      "name": "Nhà hàng phổ thông",
+      "description": "Preset cho nhà hàng casual dining, quán ăn gia đình",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh nhà hàng casual. Phân tích:\n1. MÓN ĂN: Loại món, phong cách (Việt, Á, fast casual?)\n2. PORTION: Khẩu phần, size\n3. GIÁ TRỊ: Có vẻ value-for-money không?\n4. KHÔNG GIAN: Casual, family-friendly?\n5. ĐỐI TƯỢNG: Phù hợp với ai?\n\nTrả về JSON:\n{\n  \"dish_type\": \"\",\n  \"cuisine_style\": \"\",\n  \"portion_size\": \"\",\n  \"value_impression\": \"\",\n  \"ambiance\": \"\",\n  \"target_audience\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh nhà hàng casual hấp dẫn:\n\n## MÓN ĂN:\n- Tươi ngon, đầy đặn, hấp dẫn\n- Phần ăn trông generous\n- Màu sắc tự nhiên, appetizing\n\n## KHÔNG GIAN:\n- Ấm cúng, friendly\n- Sạch sẽ, thoải mái\n\n## CON NGƯỜI:\n- Gia đình Việt đang dùng bữa vui vẻ\n- Nhóm bạn đang chia sẻ món ăn\n- Trẻ em đang ăn ngon miệng\n- Biểu cảm hạnh phúc, thoải mái\n\n## STYLE:\n- Bright, cheerful\n- Family-friendly vibes\n- Instagram-worthy nhưng approachable"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "happy families and friends enjoying meals together",
+        "peopleTypes": [
+          "family with children having dinner",
+          "group of friends sharing dishes",
+          "young couple on casual date",
+          "kids enjoying their favorite food"
+        ],
+        "colorEnhancement": "bright, warm, appetizing colors",
+        "lightingStyle": "bright natural lighting, cheerful atmosphere"
+      }
+    },
+    
+    "restaurant-vietnamese": {
+      "name": "Ẩm thực Việt Nam",
+      "description": "Preset chuyên cho món ăn Việt Nam truyền thống",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh ẩm thực Việt Nam. Phân tích:\n1. MÓN ĂN: Tên món Việt, vùng miền (Bắc, Trung, Nam?)\n2. NGUYÊN LIỆU: Rau thơm, nước mắm, gia vị đặc trưng\n3. CÁCH ĂN: Cuốn, chấm, chan, gắp?\n4. ĐẶC TRƯNG: Yếu tố Việt Nam nào nổi bật?\n5. AUTHENTIC: Độ chân thực của món ăn?\n\nTrả về JSON:\n{\n  \"dish_name_vi\": \"\",\n  \"region\": \"\",\n  \"key_ingredients\": [],\n  \"eating_style\": \"\",\n  \"vietnamese_elements\": [],\n  \"authenticity_score\": 1-10,\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh ẩm thực Việt Nam đậm đà bản sắc:\n\n## MÓN ĂN:\n- Giữ nguyên authenticity Việt Nam\n- Tăng độ tươi ngon, hấp dẫn\n- Rau thơm tươi xanh\n- Nước mắm trong veo\n- Hơi khói bốc lên từ món nóng\n\n## YẾU TỐ VIỆT NAM:\n- Bát, đĩa gốm Việt truyền thống\n- Đũa tre/gỗ\n- Rổ rau thơm\n- Chén nước mắm\n\n## CON NGƯỜI:\n- Người Việt đang thưởng thức\n- Tay đang cuốn bánh tráng\n- Tay gắp phở với đũa\n- Gia đình sum họp bên mâm cơm\n\n## STYLE:\n- Authentic Vietnamese aesthetics\n- Warm, homey feeling\n- Cultural pride"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": [
+          "Vietnamese hands rolling spring rolls",
+          "chopsticks picking up pho noodles",
+          "family gathered around rice dishes",
+          "grandmother serving traditional food"
+        ],
+        "peopleEthnicity": "Vietnamese",
+        "colorEnhancement": "natural Vietnamese food colors, fresh herbs green",
+        "lightingStyle": "warm natural light, homey atmosphere"
+      }
+    },
+    
+    "restaurant-cafe": {
+      "name": "Quán cà phê & Bakery",
+      "description": "Preset cho quán cà phê, tiệm bánh, dessert bar",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh cafe & bakery. Phân tích:\n1. SẢN PHẨM: Coffee, bánh, dessert loại gì?\n2. PRESENTATION: Latte art, plating style\n3. KHÔNG GIAN: Cozy, modern, vintage?\n4. INSTAGRAM-WORTHY: Độ 'sống ảo'?\n5. TARGET: Giới trẻ, working professionals?\n\nTrả về JSON:\n{\n  \"product_type\": \"\",\n  \"presentation_style\": \"\",\n  \"cafe_ambiance\": \"\",\n  \"instagrammability\": 1-10,\n  \"target_demographic\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh cafe/bakery cực kỳ Instagram-worthy:\n\n## ĐỒ UỐNG:\n- Latte art hoàn hảo\n- Foam đẹp, layers rõ\n- Ly đẹp, matching aesthetic\n\n## BÁNH/DESSERT:\n- Glossy, appetizing\n- Texture rõ nét\n- Trang trí tinh tế\n\n## CON NGƯỜI:\n- Cô gái trẻ Việt đang chụp ảnh món\n- Nhóm bạn đang selfie với drinks\n- Người đang làm việc với laptop\n- Cặp đôi date nhẹ nhàng\n\n## KHÔNG GIAN:\n- Instagrammable background\n- Aesthetic decor\n- Natural light from windows\n\n## STYLE:\n- Bright and airy\n- Pastel or neutral tones\n- Flatlay compositions"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "young, trendy, instagram-savvy",
+        "peopleTypes": [
+          "young woman taking photo of her latte",
+          "friends doing selfie with drinks",
+          "freelancer working on laptop with coffee",
+          "couple on casual coffee date"
+        ],
+        "colorEnhancement": "bright, airy, pastel or neutral aesthetic",
+        "lightingStyle": "natural window light, bright and clean"
+      }
+    }
+  },
+  
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

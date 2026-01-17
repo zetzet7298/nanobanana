@@ -1,0 +1,180 @@
+{
+  "$schema": "../../../mcp-server/enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "spa-luxury",
+  
+  "globalSettings": {
+    "analyzerModel": "gemini-2.5-flash",
+    "enhancerModel": "gemini-2.5-flash-image",
+    "outputFormat": "png",
+    "maxConcurrentImages": 3,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN",
+    "organizeByCategory": true
+  },
+
+  "categories": {
+    "treatment-room": {
+      "name": "Treatment Room",
+      "nameVi": "Phòng trị liệu",
+      "keywords": ["massage", "treatment", "therapy room", "bed"],
+      "folderName": "phong-tri-lieu"
+    },
+    "massage": {
+      "name": "Massage",
+      "nameVi": "Massage",
+      "keywords": ["massage", "body treatment", "hands", "oil"],
+      "folderName": "massage"
+    },
+    "facial": {
+      "name": "Facial",
+      "nameVi": "Chăm sóc da mặt",
+      "keywords": ["facial", "face", "skin care", "mask"],
+      "folderName": "cham-soc-da"
+    },
+    "nail": {
+      "name": "Nail Care",
+      "nameVi": "Nail & Móng",
+      "keywords": ["nail", "manicure", "pedicure", "polish"],
+      "folderName": "nail"
+    },
+    "hair": {
+      "name": "Hair Care",
+      "nameVi": "Chăm sóc tóc",
+      "keywords": ["hair", "salon", "styling", "shampoo"],
+      "folderName": "toc"
+    },
+    "sauna": {
+      "name": "Sauna & Steam",
+      "nameVi": "Xông hơi",
+      "keywords": ["sauna", "steam", "hot tub", "jacuzzi"],
+      "folderName": "xong-hoi"
+    },
+    "yoga-fitness": {
+      "name": "Yoga & Fitness",
+      "nameVi": "Yoga & Fitness",
+      "keywords": ["yoga", "fitness", "meditation", "exercise"],
+      "folderName": "yoga-fitness"
+    },
+    "products": {
+      "name": "Products",
+      "nameVi": "Sản phẩm",
+      "keywords": ["product", "cream", "oil", "lotion", "serum"],
+      "folderName": "san-pham"
+    },
+    "reception": {
+      "name": "Reception & Lobby",
+      "nameVi": "Lễ tân",
+      "keywords": ["reception", "lobby", "waiting", "entrance"],
+      "folderName": "le-tan"
+    },
+    "pool": {
+      "name": "Pool & Relaxation",
+      "nameVi": "Hồ bơi & Thư giãn",
+      "keywords": ["pool", "relaxation", "lounge", "outdoor"],
+      "folderName": "ho-boi"
+    },
+    "other": {
+      "name": "Other",
+      "nameVi": "Khác",
+      "keywords": [],
+      "folderName": "khac"
+    }
+  },
+  
+  "presets": {
+    "spa-luxury": {
+      "name": "Spa cao cấp",
+      "description": "Preset cho spa hạng sang, resort spa, day spa cao cấp",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh spa & wellness cao cấp. Phân tích:\n1. DỊCH VỤ: Loại dịch vụ (massage, facial, body treatment?)\n2. KHÔNG GIAN: Phong cách thiết kế, ambiance\n3. TIỆN NGHI: Trang thiết bị, amenities\n4. CẢM GIÁC: Relaxation level, luxury feel\n5. BRAND: Có thể nhận diện thương hiệu?\n\nTrả về JSON:\n{\n  \"service_type\": \"\",\n  \"space_style\": \"\",\n  \"amenities\": [],\n  \"relaxation_feel\": 1-10,\n  \"luxury_level\": 1-10,\n  \"brand_elements\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh spa luxury đẳng cấp 5 sao:\n\n## KHÔNG GIAN:\n- Sang trọng, tinh tế, zen\n- Ánh sáng dịu nhẹ, ấm áp\n- Sạch sẽ, organized\n- Natural elements (gỗ, đá, nước)\n\n## DỊCH VỤ:\n- Khách hàng Việt đang thư giãn\n- Therapist chuyên nghiệp đang phục vụ\n- Biểu cảm relaxed, peaceful\n- Khăn trắng, tinh dầu, hoa\n\n## YẾU TỐ:\n- Candles, flowers, zen decor\n- Hot stones, bamboo\n- Water features\n- Natural textures\n\n## STYLE:\n- Serene, peaceful\n- Luxury wellness\n- Magazine-worthy"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "relaxed clients and professional therapists",
+        "peopleTypes": [
+          "woman receiving massage with peaceful expression",
+          "couple enjoying couples treatment",
+          "therapist performing treatment professionally",
+          "guest relaxing in robe with tea"
+        ],
+        "colorEnhancement": "warm, serene, natural tones",
+        "lightingStyle": "soft, warm, candlelight ambiance"
+      }
+    },
+    
+    "spa-wellness-center": {
+      "name": "Trung tâm Wellness",
+      "description": "Preset cho fitness center, yoga studio, wellness retreat",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh wellness & fitness. Phân tích:\n1. HOẠT ĐỘNG: Yoga, fitness, meditation?\n2. KHÔNG GIAN: Studio, gym, outdoor?\n3. TRANG THIẾT BỊ: Equipment, props\n4. NĂNG LƯỢNG: Energy level (active hay calm?)\n5. TARGET: Đối tượng khách hàng\n\nTrả về JSON:\n{\n  \"activity_type\": \"\",\n  \"space_type\": \"\",\n  \"equipment\": [],\n  \"energy_level\": \"\",\n  \"target_audience\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh wellness center truyền cảm hứng:\n\n## YOGA/MEDITATION:\n- Không gian zen, peaceful\n- Ánh sáng tự nhiên\n- Người Việt đang practice\n- Perfect form, aligned poses\n- Peaceful expressions\n\n## FITNESS:\n- Clean, modern gym\n- Motivating atmosphere\n- Active, energetic people\n- Proper workout form\n- Healthy, fit Vietnamese models\n\n## STYLE:\n- Inspirational, aspirational\n- Healthy lifestyle vibes\n- Bright, energizing (fitness) hoặc calm (yoga)"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "fit, healthy, active lifestyle",
+        "peopleTypes": [
+          "woman in perfect yoga pose",
+          "group yoga class with instructor",
+          "fit man working out at gym",
+          "person meditating peacefully"
+        ],
+        "colorEnhancement": "fresh, energizing, healthy tones",
+        "lightingStyle": "bright natural light for fitness, soft for yoga"
+      }
+    },
+    
+    "spa-beauty-salon": {
+      "name": "Salon làm đẹp",
+      "description": "Preset cho salon tóc, nail, beauty services",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh beauty salon. Phân tích:\n1. DỊCH VỤ: Hair, nail, makeup, lashes?\n2. KỸ THUẬT: Technique đang thực hiện\n3. KHÔNG GIAN: Modern, vintage, luxe?\n4. KẾT QUẢ: Before/after, quality\n5. STYLE: Trendy, classic, artistic?\n\nTrả về JSON:\n{\n  \"service_type\": \"\",\n  \"technique\": \"\",\n  \"salon_style\": \"\",\n  \"result_quality\": 1-10,\n  \"trend_level\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh beauty salon chuyên nghiệp:\n\n## DỊCH VỤ:\n- Kỹ thuật viên chuyên nghiệp đang làm việc\n- Khách hàng Việt Nam satisfied\n- Clean, hygienic environment\n- Proper tools và products\n\n## KẾT QUẢ:\n- Beautiful results showcase\n- Before/after nếu phù hợp\n- Detail shots (nails, hair style)\n\n## KHÔNG GIAN:\n- Modern, clean, stylish\n- Good lighting for work\n- Organized stations\n\n## STYLE:\n- Professional yet approachable\n- Trendy, fashionable\n- Instagram-worthy results"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "stylish clients and professional beauticians",
+        "peopleTypes": [
+          "stylist working on client's hair",
+          "nail artist creating design",
+          "satisfied client with new hairstyle",
+          "makeup artist applying makeup"
+        ],
+        "colorEnhancement": "bright, clean, modern tones",
+        "lightingStyle": "bright even lighting, no shadows on work area"
+      }
+    },
+    
+    "spa-traditional": {
+      "name": "Spa truyền thống Việt Nam",
+      "description": "Preset cho spa Việt, massage truyền thống, herbal treatments",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích spa truyền thống Việt Nam. Phân tích:\n1. LIỆU PHÁP: Massage cổ truyền, thảo dược, giác hơi?\n2. NGUYÊN LIỆU: Herbs, oils truyền thống Việt\n3. KHÔNG GIAN: Vietnamese traditional elements\n4. AUTHENTICITY: Độ chân thực văn hóa\n5. WELLNESS BENEFITS: Lợi ích sức khỏe\n\nTrả về JSON:\n{\n  \"therapy_type\": \"\",\n  \"traditional_ingredients\": [],\n  \"vietnamese_elements\": [],\n  \"authenticity_score\": 1-10,\n  \"wellness_benefits\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh spa truyền thống Việt Nam đậm đà bản sắc:\n\n## LIỆU PHÁP:\n- Kỹ thuật massage Việt Nam\n- Giác hơi, thảo dược, tinh dầu Việt\n- Therapist Việt Nam chuyên nghiệp\n\n## NGUYÊN LIỆU:\n- Thảo dược Việt (sả, gừng, nghệ)\n- Tinh dầu tự nhiên\n- Hot stones, bamboo\n- Gốm sứ Bát Tràng\n\n## KHÔNG GIAN:\n- Vietnamese traditional aesthetics\n- Gỗ, tre, đá tự nhiên\n- Ánh sáng dịu, ấm áp\n- Zen garden elements\n\n## STYLE:\n- Authentic Vietnamese wellness\n- Cultural heritage\n- Natural, organic feel"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "traditional Vietnamese therapists and relaxed clients",
+        "peopleTypes": [
+          "Vietnamese therapist performing traditional massage",
+          "woman enjoying herbal treatment",
+          "guest receiving cupping therapy",
+          "couple in traditional Vietnamese spa setting"
+        ],
+        "colorEnhancement": "warm, natural, earthy Vietnamese tones",
+        "lightingStyle": "warm, soft, traditional lantern-like ambiance"
+      }
+    }
+  },
+  
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

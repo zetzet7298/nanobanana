@@ -7,8 +7,8 @@ on:
   # This allows the workflow to be triggered when a new tag is pushed
   push:
     tags:
-      - 'v*' # Triggers on tags like v1.0, v1.0.1, etc.
-  
+      - "v*" # Triggers on tags like v1.0, v1.0.1, etc.
+
   # This allows you to run the workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -28,8 +28,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Specify the Node.js version you use
-          cache: 'npm'
+          node-version: "20" # Specify the Node.js version you use
+          cache: "npm"
 
       # 3. Installs root dependencies
       # We use 'npm ci' which is faster and safer for CI/CD environments
@@ -59,7 +59,7 @@ jobs:
       # Exclude root node_modules but INCLUDE mcp-server/node_modules
       - name: Create TAR archive
         run: tar -cvzf ../nanobanana-release.tar.gz --exclude='.git' --exclude='.github' --exclude='./node_modules' . && mv ../nanobanana-release.tar.gz .
-  
+
       # 8. Creates the GitHub Release
       # This step uses the 'gh' CLI (pre-installed on the runner) to:
       #   - Create a new release based on the tag you pushed.

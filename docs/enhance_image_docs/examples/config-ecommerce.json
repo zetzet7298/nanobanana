@@ -1,0 +1,173 @@
+{
+  "$schema": "../../../mcp-server/enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "ecommerce-fashion",
+  
+  "globalSettings": {
+    "analyzerModel": "gemini-2.5-flash",
+    "enhancerModel": "gemini-2.5-flash-image",
+    "outputFormat": "png",
+    "maxConcurrentImages": 5,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN",
+    "organizeByCategory": true
+  },
+
+  "categories": {
+    "fashion-women": {
+      "name": "Women's Fashion",
+      "nameVi": "Thời trang nữ",
+      "keywords": ["dress", "blouse", "skirt", "women", "female", "lady"],
+      "folderName": "thoi-trang-nu"
+    },
+    "fashion-men": {
+      "name": "Men's Fashion",
+      "nameVi": "Thời trang nam",
+      "keywords": ["shirt", "pants", "suit", "men", "male", "gentleman"],
+      "folderName": "thoi-trang-nam"
+    },
+    "accessories": {
+      "name": "Accessories",
+      "nameVi": "Phụ kiện",
+      "keywords": ["bag", "watch", "jewelry", "belt", "hat", "scarf"],
+      "folderName": "phu-kien"
+    },
+    "shoes": {
+      "name": "Shoes",
+      "nameVi": "Giày dép",
+      "keywords": ["shoes", "sneakers", "heels", "boots", "sandals"],
+      "folderName": "giay-dep"
+    },
+    "electronics": {
+      "name": "Electronics",
+      "nameVi": "Điện tử",
+      "keywords": ["phone", "laptop", "tablet", "headphones", "camera"],
+      "folderName": "dien-tu"
+    },
+    "beauty": {
+      "name": "Beauty",
+      "nameVi": "Làm đẹp",
+      "keywords": ["makeup", "skincare", "cosmetics", "perfume", "beauty"],
+      "folderName": "lam-dep"
+    },
+    "home": {
+      "name": "Home & Living",
+      "nameVi": "Nhà cửa",
+      "keywords": ["furniture", "decor", "kitchen", "bedroom", "home"],
+      "folderName": "nha-cua"
+    },
+    "food": {
+      "name": "Food & Beverage",
+      "nameVi": "Thực phẩm",
+      "keywords": ["food", "snack", "drink", "coffee", "tea"],
+      "folderName": "thuc-pham"
+    },
+    "lifestyle": {
+      "name": "Lifestyle",
+      "nameVi": "Lifestyle",
+      "keywords": ["lifestyle", "flatlay", "aesthetic", "mood"],
+      "folderName": "lifestyle"
+    },
+    "other": {
+      "name": "Other",
+      "nameVi": "Khác",
+      "keywords": [],
+      "folderName": "khac"
+    }
+  },
+  
+  "presets": {
+    "ecommerce-fashion": {
+      "name": "Thời trang E-commerce",
+      "description": "Preset cho ảnh thời trang bán hàng online",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh thời trang e-commerce. Phân tích:\n1. SẢN PHẨM: Loại trang phục, style, màu sắc\n2. CHI TIẾT: Chất liệu, họa tiết, đường may\n3. GÓC CHỤP: Trước, sau, detail, flat lay?\n4. MODEL: Có người mẫu không? Pose?\n5. BACKGROUND: Studio trắng, lifestyle, outdoor?\n6. E-COMMERCE READY: Đạt chuẩn bán hàng online?\n\nTrả về JSON:\n{\n  \"product_type\": \"\",\n  \"style\": \"\",\n  \"colors\": [],\n  \"material_visible\": \"\",\n  \"angle\": \"\",\n  \"has_model\": true/false,\n  \"background_type\": \"\",\n  \"ecommerce_score\": 1-10,\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh thời trang e-commerce chuyên nghiệp:\n\n## SẢN PHẨM:\n- Màu sắc trung thực, chính xác\n- Chi tiết rõ nét (đường may, texture)\n- Không nhăn, không bụi\n\n## NẾU KHÔNG CÓ MODEL:\n- Thêm người mẫu Việt Nam:\n  + Nữ: dáng thon, da sáng, 165-170cm\n  + Nam: athletic, 175-180cm\n  + Pose tự nhiên, tự tin\n  + Biểu cảm friendly, approachable\n\n## BACKGROUND:\n- Studio trắng sạch cho ảnh chính\n- Lifestyle setting cho ảnh mood\n- Consistent across product line\n\n## STYLE:\n- Clean, professional\n- Proper lighting (no harsh shadows)\n- Color accurate"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "addModelIfRelevant": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "professional fashion models, confident poses",
+        "peopleTypes": [
+          "female model with slim figure, natural pose",
+          "male model with athletic build, casual stance",
+          "model showing front and back views"
+        ],
+        "colorEnhancement": "accurate to actual product, no oversaturation",
+        "lightingStyle": "studio lighting, soft shadows, even exposure"
+      }
+    },
+    
+    "ecommerce-lifestyle": {
+      "name": "Lifestyle Product Shot",
+      "description": "Preset cho ảnh sản phẩm phong cách lifestyle",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích lifestyle product photography. Phân tích:\n1. SẢN PHẨM: Loại sản phẩm, thương hiệu feel\n2. CONTEXT: Đang được sử dụng như thế nào?\n3. MOOD: Tone, feeling, vibe\n4. TARGET: Đối tượng khách hàng\n5. STORY: Câu chuyện ảnh đang kể?\n\nTrả về JSON:\n{\n  \"product_type\": \"\",\n  \"usage_context\": \"\",\n  \"mood\": \"\",\n  \"target_audience\": [],\n  \"story\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh lifestyle product đầy cảm xúc:\n\n## SẢN PHẨM:\n- Là một phần của lifestyle, không phải focus duy nhất\n- Được sử dụng tự nhiên trong bối cảnh\n\n## CON NGƯỜI:\n- Người Việt Nam đang sử dụng sản phẩm tự nhiên\n- Không nhìn vào camera (candid style)\n- Biểu cảm tự nhiên, relaxed\n- Lifestyle phù hợp với target audience\n\n## BỐI CẢNH:\n- Relevant lifestyle setting\n- Aesthetic, aspirational\n- Props phù hợp\n\n## STYLE:\n- Warm, inviting\n- Aspirational but achievable\n- Instagram-worthy"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "natural, candid, not looking at camera",
+        "peopleTypes": [
+          "young woman using product in daily life",
+          "couple enjoying product together",
+          "person in aspirational lifestyle setting",
+          "friends sharing product experience"
+        ],
+        "colorEnhancement": "warm, lifestyle tones, slightly elevated",
+        "lightingStyle": "natural light, golden hour preferred"
+      }
+    },
+    
+    "ecommerce-beauty": {
+      "name": "Mỹ phẩm & Làm đẹp",
+      "description": "Preset cho sản phẩm mỹ phẩm, skincare, làm đẹp",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích beauty product photography. Phân tích:\n1. SẢN PHẨM: Skincare, makeup, haircare?\n2. PACKAGING: Thiết kế bao bì, high-end hay drugstore?\n3. TEXTURE: Có show được texture sản phẩm?\n4. BRAND FEEL: Luxury, natural, clinical?\n5. USAGE: Cách sử dụng có thể thấy?\n\nTrả về JSON:\n{\n  \"product_category\": \"\",\n  \"packaging_style\": \"\",\n  \"texture_visible\": true/false,\n  \"brand_positioning\": \"\",\n  \"usage_demonstration\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh beauty product cao cấp:\n\n## SẢN PHẨM:\n- Packaging sạch, bóng, không fingerprint\n- Label rõ ràng, đọc được\n- Texture sản phẩm hấp dẫn (cream swirl, serum drops)\n\n## MODEL NẾU PHÙ HỢP:\n- Da đẹp, sáng, khỏe mạnh\n- Đang apply sản phẩm\n- Close-up hands hoặc face\n- Người mẫu Việt Nam\n\n## BACKGROUND:\n- Clean, minimalist\n- Matching brand aesthetic\n- Subtle props (flowers, water drops)\n\n## STYLE:\n- Luxurious, aspirational\n- Clean beauty aesthetic\n- Dewy, fresh feeling"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": [
+          "beautiful Vietnamese woman applying skincare",
+          "hands with perfect manicure holding product",
+          "close-up of flawless skin with product",
+          "model showing before/after effect"
+        ],
+        "peopleEthnicity": "Vietnamese",
+        "colorEnhancement": "clean, fresh, luxurious tones",
+        "lightingStyle": "soft beauty lighting, even and flattering"
+      }
+    },
+    
+    "ecommerce-flatlay": {
+      "name": "Flatlay & Product Grid",
+      "description": "Preset cho ảnh flatlay, product arrangement",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích flatlay photography. Phân tích:\n1. SẢN PHẨM: Các items trong khung hình\n2. ARRANGEMENT: Cách sắp xếp, composition\n3. PROPS: Các vật phụ trợ\n4. COLOR SCHEME: Bảng màu\n5. NEGATIVE SPACE: Sử dụng không gian trống\n\nTrả về JSON:\n{\n  \"products\": [],\n  \"arrangement_style\": \"\",\n  \"props_used\": [],\n  \"color_scheme\": \"\",\n  \"negative_space\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo flatlay hoàn hảo:\n\n## ARRANGEMENT:\n- Balanced composition\n- Rule of thirds or symmetry\n- Proper spacing between items\n\n## PROPS:\n- Relevant, không overwhelming\n- Matching aesthetic\n- Natural elements (plants, flowers)\n\n## YẾU TỐ CON NGƯỜI:\n- Tay người Việt reaching for item\n- Hand holding featured product\n- Không cần full body\n\n## STYLE:\n- Clean, organized\n- Instagram-worthy\n- Consistent with brand aesthetic"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": false,
+        "addHumanElements": true,
+        "humanElements": [
+          "Vietnamese hand reaching for product",
+          "hand holding featured item",
+          "finger pointing to key product"
+        ],
+        "peopleEthnicity": "Vietnamese",
+        "colorEnhancement": "cohesive color palette, slightly elevated",
+        "lightingStyle": "even overhead lighting, no harsh shadows"
+      }
+    }
+  },
+  
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

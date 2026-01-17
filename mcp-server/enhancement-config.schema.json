@@ -1,0 +1,296 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/gemini-cli-extensions/nanobanana/blob/main/mcp-server/enhancement-config.schema.json",
+  "title": "EnhancementConfig",
+  "description": "Configuration schema for Nanobanana image enhancement system",
+  "type": "object",
+  "required": [
+    "version",
+    "activePreset",
+    "globalSettings",
+    "presets",
+    "customPrompts"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "version": {
+      "type": "string",
+      "description": "Configuration version (semantic versioning)",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0", "1.1.0"]
+    },
+    "activePreset": {
+      "type": "string",
+      "description": "Default preset to use for enhancement",
+      "minLength": 1,
+      "examples": ["default", "tourism", "restaurant"]
+    },
+    "globalSettings": {
+      "$ref": "#/definitions/GlobalSettings"
+    },
+    "categories": {
+      "type": "object",
+      "description": "Category definitions for image classification and organization",
+      "additionalProperties": {
+        "$ref": "#/definitions/CategoryDefinition"
+      }
+    },
+    "presets": {
+      "type": "object",
+      "description": "Enhancement presets with specific rules and prompts",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/definitions/EnhancementPreset"
+      }
+    },
+    "customPrompts": {
+      "$ref": "#/definitions/CustomPrompts"
+    }
+  },
+  "definitions": {
+    "GlobalSettings": {
+      "type": "object",
+      "description": "Global configuration settings for the enhancement system",
+      "required": [
+        "analyzerModel",
+        "enhancerModel",
+        "outputFormat",
+        "maxConcurrentImages",
+        "saveAnalysisReport",
+        "locale"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "analyzerModel": {
+          "type": "string",
+          "description": "Gemini model for image analysis (text+vision)",
+          "default": "gemini-2.5-flash",
+          "examples": ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
+        },
+        "enhancerModel": {
+          "type": "string",
+          "description": "Gemini model for image generation/enhancement",
+          "default": "gemini-2.5-flash-image",
+          "examples": ["gemini-2.5-flash-image", "gemini-2.0-flash-exp"]
+        },
+        "outputFormat": {
+          "type": "string",
+          "description": "Output image format",
+          "enum": ["png", "jpeg"],
+          "default": "png"
+        },
+        "maxConcurrentImages": {
+          "type": "integer",
+          "description": "Maximum number of images to process concurrently in batch mode",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 3
+        },
+        "saveAnalysisReport": {
+          "type": "boolean",
+          "description": "Whether to save JSON analysis reports alongside enhanced images",
+          "default": true
+        },
+        "organizeByCategory": {
+          "type": "boolean",
+          "description": "Whether to organize output images into category subfolders",
+          "default": true
+        },
+        "locale": {
+          "type": "string",
+          "description": "Locale for prompts and output (BCP 47 language tag)",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "default": "vi-VN",
+          "examples": ["vi-VN", "en-US", "ja-JP"]
+        }
+      }
+    },
+    "CategoryDefinition": {
+      "type": "object",
+      "description": "Definition for an image category used in classification",
+      "required": ["name", "nameVi", "keywords", "folderName"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "English display name for the category",
+          "minLength": 1,
+          "examples": ["Beach", "Restaurant", "Hotel"]
+        },
+        "nameVi": {
+          "type": "string",
+          "description": "Vietnamese display name for the category",
+          "minLength": 1,
+          "examples": ["Bãi biển", "Nhà hàng", "Khách sạn"]
+        },
+        "keywords": {
+          "type": "array",
+          "description": "Keywords used for automatic image classification",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "examples": [["beach", "sand", "shore", "coast"]]
+        },
+        "folderName": {
+          "type": "string",
+          "description": "URL-safe folder name for organizing output",
+          "pattern": "^[a-z0-9-]+$",
+          "minLength": 1,
+          "examples": ["bai-bien", "nha-hang", "khach-san"]
+        }
+      }
+    },
+    "EnhancementPreset": {
+      "type": "object",
+      "description": "A preset configuration for image enhancement",
+      "required": ["name", "description", "systemPrompt", "enhancementRules"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name for the preset",
+          "minLength": 1,
+          "examples": ["Tourism & Travel", "Restaurant & Food"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of what this preset is optimized for",
+          "minLength": 1
+        },
+        "systemPrompt": {
+          "$ref": "#/definitions/SystemPrompt"
+        },
+        "enhancementRules": {
+          "$ref": "#/definitions/EnhancementRules"
+        }
+      }
+    },
+    "SystemPrompt": {
+      "type": "object",
+      "description": "System prompts for analysis and enhancement phases",
+      "required": ["analysis", "enhancement"],
+      "additionalProperties": false,
+      "properties": {
+        "analysis": {
+          "type": "string",
+          "description": "Prompt for the image analysis phase (should request JSON output)",
+          "minLength": 10
+        },
+        "enhancement": {
+          "type": "string",
+          "description": "Prompt for the image enhancement/generation phase",
+          "minLength": 10
+        }
+      }
+    },
+    "EnhancementRules": {
+      "type": "object",
+      "description": "Rules that guide how images should be enhanced",
+      "required": ["addPeopleIfEmpty", "colorEnhancement", "lightingStyle"],
+      "additionalProperties": false,
+      "properties": {
+        "addPeopleIfEmpty": {
+          "type": "boolean",
+          "description": "Whether to add people when the scene appears empty",
+          "default": true
+        },
+        "peopleEthnicity": {
+          "type": "string",
+          "description": "Ethnicity of people to add (for authenticity in regional marketing)",
+          "examples": ["Vietnamese", "Asian", "Vietnamese/Asian"]
+        },
+        "peopleStyle": {
+          "type": "string",
+          "description": "Style and mood of people to add",
+          "examples": ["tourists enjoying activities", "relaxed guests"]
+        },
+        "peopleTypes": {
+          "type": "array",
+          "description": "Types of people groups to add",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["family with children", "young couples", "group of friends"]
+          ]
+        },
+        "addHumanElements": {
+          "type": "boolean",
+          "description": "Whether to add human elements (hands, partial figures) instead of full people",
+          "default": false
+        },
+        "humanElements": {
+          "type": "array",
+          "description": "Specific human elements to add (used with addHumanElements)",
+          "items": {
+            "type": "string"
+          },
+          "examples": [["hands with chopsticks", "person enjoying food"]]
+        },
+        "addModelIfRelevant": {
+          "type": "boolean",
+          "description": "Whether to add a model using/wearing the product (for e-commerce)",
+          "default": false
+        },
+        "colorEnhancement": {
+          "type": "string",
+          "description": "Color enhancement style to apply",
+          "minLength": 1,
+          "examples": [
+            "vibrant but natural",
+            "warm appetizing colors",
+            "vivid tropical colors"
+          ]
+        },
+        "lightingStyle": {
+          "type": "string",
+          "description": "Lighting style to apply or enhance",
+          "minLength": 1,
+          "examples": ["natural daylight", "golden hour", "soft diffused light"]
+        }
+      }
+    },
+    "CustomPrompts": {
+      "type": "object",
+      "description": "Custom prompts that override preset prompts when enabled",
+      "required": ["enabled"],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether to use custom prompts instead of preset prompts",
+          "default": false
+        },
+        "analysisPrompt": {
+          "type": "string",
+          "description": "Custom analysis prompt (required when enabled is true)"
+        },
+        "enhancementPrompt": {
+          "type": "string",
+          "description": "Custom enhancement prompt (required when enabled is true)"
+        }
+      },
+      "if": {
+        "properties": {
+          "enabled": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["enabled", "analysisPrompt", "enhancementPrompt"],
+        "properties": {
+          "analysisPrompt": {
+            "minLength": 10
+          },
+          "enhancementPrompt": {
+            "minLength": 10
+          }
+        }
+      }
+    }
+  }
+}

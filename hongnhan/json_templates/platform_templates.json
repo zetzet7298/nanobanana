@@ -1,0 +1,715 @@
+{
+  "_metadata": {
+    "version": "1.0",
+    "updated": "2025-12",
+    "description": "Platform-specific content templates for Hong Nhan Tour",
+    "author": "AI Content Generator"
+  },
+
+  "platforms": {
+    "tiktok": {
+      "name": "TikTok",
+      "specs": {
+        "video": {
+          "aspect_ratio": "9:16",
+          "resolution": "1080x1920",
+          "duration_min": 1,
+          "duration_max": 600,
+          "duration_optimal_min": 9,
+          "duration_optimal_max": 15,
+          "file_size_android_mb": 72,
+          "file_size_ios_mb": 287.6,
+          "formats": ["mp4", "mov"],
+          "fps_min": 24,
+          "fps_max": 60
+        },
+        "caption": {
+          "max_length": 2200,
+          "hashtags_max": 100,
+          "hashtags_recommended": 5
+        },
+        "thumbnail": {
+          "dimensions": "1080x1920",
+          "aspect_ratio": "9:16"
+        }
+      },
+      "content_template": {
+        "content_type": "tiktok",
+        "platform": "tiktok",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": "",
+            "story_type": "showcase",
+            "mood": "exciting",
+            "target_emotion": "wanderlust"
+          },
+          "script": [],
+          "specs": {
+            "duration_seconds": 15,
+            "aspect_ratio": "9:16",
+            "resolution": "1080x1920",
+            "fps": 30,
+            "format": "mp4"
+          },
+          "audio": {
+            "type": "trending_sound",
+            "music_suggestion": ""
+          }
+        },
+        "post_details": {
+          "caption": "",
+          "hashtags": [
+            "#binhhung",
+            "#binhtien",
+            "#dulichvietnam",
+            "#camranh",
+            "#khanhhoa",
+            "#travel",
+            "#beach",
+            "#vietnam"
+          ]
+        }
+      }
+    },
+
+    "instagram_reel": {
+      "name": "Instagram Reels",
+      "specs": {
+        "video": {
+          "aspect_ratio": "9:16",
+          "resolution": "1080x1920",
+          "duration_min": 3,
+          "duration_max": 90,
+          "duration_optimal_min": 15,
+          "duration_optimal_max": 30,
+          "file_size_mb": 650,
+          "formats": ["mp4", "mov"],
+          "fps_min": 30
+        },
+        "cover": {
+          "dimensions": "420x654",
+          "aspect_ratio": "1:1.55"
+        },
+        "caption": {
+          "max_length": 2200,
+          "hashtags_max": 30,
+          "hashtags_recommended": 10
+        },
+        "safe_zones": {
+          "top_percent": 14,
+          "bottom_percent": 35,
+          "sides_percent": 6
+        }
+      },
+      "content_template": {
+        "content_type": "reel",
+        "platform": "instagram_reel",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": "",
+            "story_type": "showcase"
+          },
+          "script": [],
+          "specs": {
+            "duration_seconds": 30,
+            "aspect_ratio": "9:16",
+            "resolution": "1080x1920",
+            "fps": 30,
+            "format": "mp4"
+          }
+        },
+        "post_details": {
+          "caption": "",
+          "hashtags": [
+            "#binhhung",
+            "#binhtien",
+            "#dulichvietnam",
+            "#vietnamtravel",
+            "#beachlife",
+            "#islandlife",
+            "#travelvietnam",
+            "#camranh",
+            "#khanhhoa",
+            "#exploreVietnam"
+          ]
+        }
+      }
+    },
+
+    "instagram_feed": {
+      "name": "Instagram Feed Post",
+      "specs": {
+        "image": {
+          "square": {
+            "dimensions": "1080x1080",
+            "aspect_ratio": "1:1"
+          },
+          "portrait": {
+            "dimensions": "1080x1350",
+            "aspect_ratio": "4:5"
+          },
+          "landscape": {
+            "dimensions": "1080x566",
+            "aspect_ratio": "1.91:1"
+          }
+        },
+        "carousel": {
+          "max_items": 10,
+          "formats": ["jpg", "png", "mp4", "mov"]
+        },
+        "caption": {
+          "max_length": 2200,
+          "hashtags_max": 30
+        }
+      },
+      "content_template": {
+        "content_type": "post",
+        "platform": "instagram_feed",
+        "content": {
+          "caption": "",
+          "caption_short": "",
+          "hashtags": [],
+          "cta": {
+            "text": "Liên hệ đặt tour: 0942 704 480",
+            "button_type": "contact_us"
+          },
+          "location": {
+            "name": "Đảo Bình Hưng, Cam Ranh, Khánh Hòa"
+          }
+        },
+        "media": {
+          "type": "image",
+          "items": [
+            {
+              "prompt": "",
+              "alt_text": "",
+              "dimensions": "1080x1350",
+              "aspect_ratio": "4:5"
+            }
+          ]
+        }
+      }
+    },
+
+    "instagram_story": {
+      "name": "Instagram Story",
+      "specs": {
+        "dimensions": "1080x1920",
+        "aspect_ratio": "9:16",
+        "duration_max": 15,
+        "safe_zones": {
+          "top_px": 250,
+          "bottom_px": 340
+        }
+      },
+      "content_template": {
+        "content_type": "story",
+        "platform": "instagram_story",
+        "content": {
+          "caption": "",
+          "sticker_suggestions": [],
+          "poll_question": null,
+          "link": null
+        },
+        "media": {
+          "type": "image",
+          "items": [
+            {
+              "prompt": "",
+              "dimensions": "1080x1920",
+              "aspect_ratio": "9:16"
+            }
+          ]
+        }
+      }
+    },
+
+    "facebook_reel": {
+      "name": "Facebook Reels",
+      "specs": {
+        "video": {
+          "aspect_ratio": "9:16",
+          "resolution_recommended": "1080x1920",
+          "resolution_min": "540x960",
+          "duration_min": 3,
+          "duration_max": 90,
+          "file_size_max_mb": 1024,
+          "formats": ["mp4", "mov", "avi"],
+          "fps_min": 24,
+          "fps_max": 60
+        },
+        "caption": {
+          "max_length": 2200
+        }
+      },
+      "content_template": {
+        "content_type": "reel",
+        "platform": "facebook_reel",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": ""
+          },
+          "script": [],
+          "specs": {
+            "duration_seconds": 30,
+            "aspect_ratio": "9:16",
+            "resolution": "1080x1920",
+            "fps": 30,
+            "format": "mp4"
+          }
+        },
+        "post_details": {
+          "caption": "",
+          "hashtags": []
+        }
+      }
+    },
+
+    "facebook_page": {
+      "name": "Facebook Page Post",
+      "specs": {
+        "image": {
+          "feed": {
+            "dimensions": "1200x630",
+            "aspect_ratio": "1.91:1"
+          },
+          "square": {
+            "dimensions": "1200x1200",
+            "aspect_ratio": "1:1"
+          }
+        },
+        "video": {
+          "formats": ["mp4", "mov"],
+          "aspect_ratios": ["16:9", "9:16", "1:1", "4:5"]
+        },
+        "caption": {
+          "max_length": 63206,
+          "recommended_length": 400
+        },
+        "link_preview": {
+          "image_dimensions": "1200x628"
+        }
+      },
+      "content_template": {
+        "content_type": "post",
+        "platform": "facebook_page",
+        "content": {
+          "caption": "",
+          "hashtags": [],
+          "cta": {
+            "text": "Đặt tour ngay: 0942 704 480",
+            "url": "https://hongnhanbinhhung.com",
+            "button_type": "book_now"
+          }
+        },
+        "media": {
+          "type": "image",
+          "items": [
+            {
+              "prompt": "",
+              "alt_text": "",
+              "dimensions": "1200x630"
+            }
+          ]
+        }
+      }
+    },
+
+    "facebook_carousel": {
+      "name": "Facebook Carousel",
+      "specs": {
+        "cards": {
+          "min": 2,
+          "max": 10
+        },
+        "image": {
+          "dimensions": "1080x1080",
+          "aspect_ratio": "1:1"
+        },
+        "headline": {
+          "max_length": 40
+        },
+        "description": {
+          "max_length": 20
+        }
+      },
+      "content_template": {
+        "content_type": "carousel",
+        "platform": "facebook_carousel",
+        "slides": [],
+        "post_details": {
+          "caption": "",
+          "hashtags": []
+        },
+        "specs": {
+          "aspect_ratio": "1:1",
+          "dimensions": "1080x1080"
+        }
+      }
+    },
+
+    "youtube_short": {
+      "name": "YouTube Shorts",
+      "specs": {
+        "video": {
+          "aspect_ratio": "9:16",
+          "resolution_recommended": "1920x1080",
+          "resolution_min": "600x1067",
+          "duration_max": 180,
+          "file_size_max_mb": 2048,
+          "formats": ["mp4", "mov"]
+        },
+        "title": {
+          "max_length": 100
+        },
+        "description": {
+          "max_length": 5000
+        }
+      },
+      "content_template": {
+        "content_type": "short",
+        "platform": "youtube_short",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": ""
+          },
+          "script": [],
+          "specs": {
+            "duration_seconds": 60,
+            "aspect_ratio": "9:16",
+            "resolution": "1920x1080",
+            "fps": 30,
+            "format": "mp4"
+          }
+        },
+        "post_details": {
+          "title": "",
+          "description": "",
+          "tags": [],
+          "category": "Travel & Events"
+        }
+      }
+    },
+
+    "youtube_long": {
+      "name": "YouTube Long-form Video",
+      "specs": {
+        "video": {
+          "aspect_ratio": "16:9",
+          "resolution_recommended": "1920x1080",
+          "resolution_4k": "3840x2160",
+          "formats": ["mp4", "mov", "avi", "wmv"]
+        },
+        "thumbnail": {
+          "dimensions": "1280x720",
+          "aspect_ratio": "16:9",
+          "file_size_max_mb": 2
+        },
+        "title": {
+          "max_length": 100
+        },
+        "description": {
+          "max_length": 5000
+        }
+      },
+      "content_template": {
+        "content_type": "long_form",
+        "platform": "youtube_long",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": "",
+            "story_type": "vlog"
+          },
+          "script": [],
+          "specs": {
+            "duration_seconds": 600,
+            "aspect_ratio": "16:9",
+            "resolution": "1920x1080",
+            "fps": 30,
+            "format": "mp4"
+          }
+        },
+        "post_details": {
+          "title": "",
+          "description": "",
+          "tags": [],
+          "category": "Travel & Events",
+          "thumbnail": {
+            "prompt": "",
+            "dimensions": "1280x720"
+          }
+        }
+      }
+    },
+
+    "zalo_oa": {
+      "name": "Zalo Official Account",
+      "specs": {
+        "image": {
+          "post": {
+            "dimensions": "1200x628"
+          }
+        },
+        "message": {
+          "max_length": 2000
+        },
+        "article": {
+          "max_length": 10000
+        }
+      },
+      "content_template": {
+        "content_type": "post",
+        "platform": "zalo_oa",
+        "content": {
+          "caption": "",
+          "cta": {
+            "text": "Chat Zalo: 0357 400 381",
+            "url": "https://zalo.me/0357400381"
+          }
+        },
+        "media": {
+          "type": "image",
+          "items": [
+            {
+              "prompt": "",
+              "dimensions": "1200x628"
+            }
+          ]
+        }
+      }
+    },
+
+    "zalo_reel": {
+      "name": "Zalo Reels",
+      "specs": {
+        "video": {
+          "aspect_ratio": "9:16",
+          "resolution": "1080x1920",
+          "duration_max": 60,
+          "formats": ["mp4"]
+        }
+      },
+      "content_template": {
+        "content_type": "reel",
+        "platform": "zalo_reel",
+        "video": {
+          "concept": {
+            "title": "",
+            "hook": ""
+          },
+          "specs": {
+            "duration_seconds": 30,
+            "aspect_ratio": "9:16",
+            "resolution": "1080x1920",
+            "format": "mp4"
+          }
+        },
+        "post_details": {
+          "caption": ""
+        }
+      }
+    },
+
+    "linkedin": {
+      "name": "LinkedIn",
+      "specs": {
+        "image": {
+          "post": {
+            "dimensions": "1200x627",
+            "aspect_ratio": "1.91:1"
+          },
+          "square": {
+            "dimensions": "1200x1200",
+            "aspect_ratio": "1:1"
+          }
+        },
+        "video": {
+          "duration_min": 3,
+          "duration_max": 600,
+          "file_size_max_mb": 5120
+        },
+        "post": {
+          "max_length": 3000,
+          "hashtags_recommended": 5
+        }
+      },
+      "content_template": {
+        "content_type": "post",
+        "platform": "linkedin",
+        "content": {
+          "caption": "",
+          "hashtags": []
+        },
+        "media": {
+          "type": "image",
+          "items": [
+            {
+              "prompt": "",
+              "dimensions": "1200x627"
+            }
+          ]
+        }
+      }
+    }
+  },
+
+  "ad_platforms": {
+    "facebook_ads": {
+      "name": "Facebook Ads",
+      "specs": {
+        "image": {
+          "feed": {
+            "dimensions": "1080x1080",
+            "aspect_ratio": "1:1"
+          },
+          "story": {
+            "dimensions": "1080x1920",
+            "aspect_ratio": "9:16"
+          }
+        },
+        "video": {
+          "feed": {
+            "aspect_ratios": ["1:1", "4:5", "16:9"],
+            "duration_max": 240
+          },
+          "story": {
+            "aspect_ratio": "9:16",
+            "duration_max": 120
+          }
+        },
+        "text": {
+          "primary_text": 125,
+          "headline": 40,
+          "description": 30
+        },
+        "cta_buttons": [
+          "Learn More",
+          "Book Now",
+          "Contact Us",
+          "Get Quote",
+          "Shop Now",
+          "Sign Up",
+          "Send Message",
+          "Call Now"
+        ]
+      }
+    },
+
+    "google_ads": {
+      "name": "Google Ads",
+      "specs": {
+        "responsive_search": {
+          "headlines": {
+            "count": 15,
+            "max_length": 30
+          },
+          "descriptions": {
+            "count": 4,
+            "max_length": 90
+          }
+        },
+        "display": {
+          "dimensions": [
+            "300x250",
+            "336x280",
+            "728x90",
+            "160x600",
+            "320x50",
+            "300x600"
+          ]
+        }
+      }
+    },
+
+    "tiktok_ads": {
+      "name": "TikTok Ads",
+      "specs": {
+        "in_feed": {
+          "aspect_ratio": "9:16",
+          "resolution": "720p or 1080p",
+          "duration_min": 5,
+          "duration_max": 60,
+          "duration_recommended": 15,
+          "file_size_max_mb": 500,
+          "formats": ["mp4", "mov", "mpeg", "3gp", "avi"]
+        },
+        "text": {
+          "ad_text": 100,
+          "cta": [
+            "Learn More",
+            "Shop Now",
+            "Sign Up",
+            "Contact Us",
+            "Download",
+            "Book Now"
+          ]
+        }
+      }
+    }
+  },
+
+  "brand_defaults": {
+    "business_name": "Hồng Nhàn Tour",
+    "business_name_en": "Hong Nhan Tour",
+    "slogan_vi": "Chạm Đến Thiên Đường Biển Đảo",
+    "slogan_en": "Touch Paradise of the Sea Islands",
+    "website": "https://hongnhanbinhhung.com",
+    "hotline": "0942 704 480",
+    "zalo": "0357 400 381",
+    "email": "baythanghai@gmail.com",
+    "locations": [
+      {
+        "name": "Đảo Bình Hưng",
+        "name_en": "Binh Hung Island",
+        "coordinates": {
+          "lat": 11.6725,
+          "lng": 109.2567
+        }
+      },
+      {
+        "name": "Bình Tiên",
+        "name_en": "Binh Tien Beach",
+        "coordinates": {
+          "lat": 11.6892,
+          "lng": 109.2234
+        }
+      }
+    ],
+    "social_links": {
+      "facebook": "https://www.facebook.com/binhhunghongnhan/",
+      "youtube": "https://www.youtube.com/@TourBinhHung-HongNhan-zp5zm",
+      "tiktok": "https://www.tiktok.com/@hng.nhn.tour.bnh",
+      "zalo": "https://zalo.me/0357400381"
+    },
+    "brand_colors": {
+      "primary": "#0066CC",
+      "secondary": "#00A86B",
+      "accent": "#FFD700"
+    },
+    "default_hashtags_vi": [
+      "#HồngNhànTour",
+      "#BìnhHưng",
+      "#BìnhTiên",
+      "#DuLịchBiểnĐảo",
+      "#CamRanh",
+      "#KhánhHòa",
+      "#TômHùmBìnhHưng",
+      "#BãiĐáTrứng"
+    ],
+    "default_hashtags_en": [
+      "#HongNhanTour",
+      "#BinhHung",
+      "#BinhTien",
+      "#VietnamIsland",
+      "#CamRanh",
+      "#KhanhHoa",
+      "#VietnamTravel",
+      "#HiddenParadise"
+    ]
+  }
+}

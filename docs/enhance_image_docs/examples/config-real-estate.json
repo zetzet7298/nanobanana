@@ -1,0 +1,158 @@
+{
+  "$schema": "../../../mcp-server/enhancement-config.schema.json",
+  "version": "1.0.0",
+  "activePreset": "real-estate-residential",
+  
+  "globalSettings": {
+    "analyzerModel": "gemini-2.5-flash",
+    "enhancerModel": "gemini-2.5-flash-image",
+    "outputFormat": "png",
+    "maxConcurrentImages": 3,
+    "saveAnalysisReport": true,
+    "locale": "vi-VN",
+    "organizeByCategory": true
+  },
+
+  "categories": {
+    "exterior": {
+      "name": "Exterior",
+      "nameVi": "Mặt tiền",
+      "keywords": ["facade", "building", "front", "entrance", "gate", "garden"],
+      "folderName": "mat-tien"
+    },
+    "living-room": {
+      "name": "Living Room",
+      "nameVi": "Phòng khách",
+      "keywords": ["living", "sofa", "lounge", "sitting room"],
+      "folderName": "phong-khach"
+    },
+    "bedroom": {
+      "name": "Bedroom",
+      "nameVi": "Phòng ngủ",
+      "keywords": ["bedroom", "bed", "sleeping", "master bedroom"],
+      "folderName": "phong-ngu"
+    },
+    "bathroom": {
+      "name": "Bathroom",
+      "nameVi": "Phòng tắm",
+      "keywords": ["bathroom", "toilet", "shower", "bathtub"],
+      "folderName": "phong-tam"
+    },
+    "kitchen": {
+      "name": "Kitchen",
+      "nameVi": "Nhà bếp",
+      "keywords": ["kitchen", "cooking", "stove", "cabinet"],
+      "folderName": "nha-bep"
+    },
+    "balcony": {
+      "name": "Balcony",
+      "nameVi": "Ban công",
+      "keywords": ["balcony", "terrace", "view", "outdoor"],
+      "folderName": "ban-cong"
+    },
+    "pool": {
+      "name": "Pool",
+      "nameVi": "Hồ bơi",
+      "keywords": ["pool", "swimming", "water feature"],
+      "folderName": "ho-boi"
+    },
+    "amenities": {
+      "name": "Amenities",
+      "nameVi": "Tiện ích",
+      "keywords": ["gym", "playground", "parking", "lobby", "reception"],
+      "folderName": "tien-ich"
+    },
+    "floor-plan": {
+      "name": "Floor Plan",
+      "nameVi": "Sơ đồ",
+      "keywords": ["floor plan", "layout", "blueprint", "diagram"],
+      "folderName": "so-do"
+    },
+    "aerial": {
+      "name": "Aerial View",
+      "nameVi": "Toàn cảnh",
+      "keywords": ["aerial", "drone", "bird eye", "overview"],
+      "folderName": "toan-canh"
+    },
+    "other": {
+      "name": "Other",
+      "nameVi": "Khác",
+      "keywords": [],
+      "folderName": "khac"
+    }
+  },
+  
+  "presets": {
+    "real-estate-residential": {
+      "name": "Bất động sản nhà ở",
+      "description": "Preset tối ưu cho ảnh căn hộ, nhà phố, biệt thự",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh bất động sản. Hãy mô tả chi tiết:\n1. LOẠI BẤT ĐỘNG SẢN: Căn hộ, nhà phố, biệt thự, penthouse?\n2. KHÔNG GIAN: Phòng nào? Diện tích ước tính? Bố cục?\n3. NỘI THẤT: Phong cách thiết kế, đồ nội thất chính\n4. ÁNH SÁNG: Nguồn sáng tự nhiên, nhân tạo\n5. VIEW: Nhìn ra đâu? Tầng cao?\n6. ĐIỂM NỔI BẬT: Yếu tố thu hút người mua/thuê\n7. CẦN CẢI THIỆN: Làm gì để ảnh hấp dẫn hơn?\n\nTrả về JSON:\n{\n  \"property_type\": \"\",\n  \"room_type\": \"\",\n  \"estimated_area\": \"\",\n  \"interior_style\": \"\",\n  \"lighting\": \"\",\n  \"view\": \"\",\n  \"highlights\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh bất động sản marketing chuyên nghiệp:\n\n## BẮT BUỘC:\n- Giữ nguyên bố cục và đặc điểm không gian\n- Tăng độ sáng và thoáng đãng\n- Màu sắc ấm áp, inviting\n\n## NẾU PHÒNG TRỐNG:\n- Thêm gia đình Việt Nam đang sinh hoạt tự nhiên:\n  + Phòng khách: đang trò chuyện, xem TV, chơi với con\n  + Phòng ngủ: đang đọc sách, thư giãn\n  + Bếp: đang nấu ăn, chuẩn bị bữa sáng\n  + Ban công: đang uống cà phê, ngắm cảnh\n- Trang phục casual, phù hợp ở nhà\n- Biểu cảm tự nhiên, hạnh phúc\n\n## ÁNH SÁNG:\n- Tự nhiên từ cửa sổ là chính\n- Golden hour cho exterior\n- Warm tone cho interior\n\n## STYLE:\n- Professional real estate photography\n- HDR-style balancing\n- Vertical lines thẳng (không méo lens)"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "family enjoying home life, casual home wear",
+        "peopleTypes": [
+          "young couple relaxing in living room",
+          "family with children having breakfast",
+          "woman reading book by window",
+          "man working from home"
+        ],
+        "colorEnhancement": "warm inviting tones, bright and airy",
+        "lightingStyle": "natural window light, HDR balanced"
+      }
+    },
+    
+    "real-estate-commercial": {
+      "name": "Bất động sản thương mại",
+      "description": "Preset cho văn phòng, mặt bằng kinh doanh, showroom",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh bất động sản thương mại. Phân tích:\n1. LOẠI HÌNH: Văn phòng, retail, showroom, kho bãi?\n2. QUY MÔ: Diện tích, số tầng, công suất\n3. VỊ TRÍ: Mặt tiền, trong tòa nhà, khu công nghiệp?\n4. TIỆN ÍCH: Thang máy, bãi xe, bảo vệ?\n5. TÌNH TRẠNG: Mới, đang sử dụng, cần sửa chữa?\n6. PHÙ HỢP: Loại hình kinh doanh nào?\n\nTrả về JSON:\n{\n  \"property_type\": \"\",\n  \"scale\": \"\",\n  \"location_type\": \"\",\n  \"amenities\": [],\n  \"condition\": \"\",\n  \"suitable_for\": [],\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh bất động sản thương mại chuyên nghiệp:\n\n## KHÔNG GIAN:\n- Sạch sẽ, chuyên nghiệp, ready for business\n- Tăng cảm giác rộng rãi, thoáng đãng\n- Ánh sáng đều, professional\n\n## CON NGƯỜI:\n- Nhân viên văn phòng Việt Nam đang làm việc\n- Khách hàng đang tham quan\n- Business attire, chuyên nghiệp\n- Năng động, hiệu quả\n\n## STYLE:\n- Corporate, professional\n- Modern, contemporary\n- Tạo ấn tượng đáng tin cậy"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese",
+        "peopleStyle": "business professionals, formal attire",
+        "peopleTypes": [
+          "team meeting in conference room",
+          "employees working at desks",
+          "clients visiting showroom",
+          "receptionist greeting visitors"
+        ],
+        "colorEnhancement": "neutral professional tones, bright and clean",
+        "lightingStyle": "even office lighting, no harsh shadows"
+      }
+    },
+    
+    "real-estate-luxury": {
+      "name": "Bất động sản cao cấp",
+      "description": "Preset cho biệt thự, penthouse, dự án hạng sang",
+      "systemPrompt": {
+        "analysis": "Bạn là chuyên gia phân tích hình ảnh bất động sản hạng sang. Phân tích:\n1. PHÂN KHÚC: Villa, penthouse, sky villa, branded residence?\n2. THIẾT KẾ: Phong cách (contemporary, classic, minimalist)?\n3. VẬT LIỆU: Chất liệu cao cấp nào được sử dụng?\n4. TIỆN NGHI: Private pool, smart home, wine cellar?\n5. VIEW: Sông, biển, thành phố, sân golf?\n6. LIFESTYLE: Phong cách sống mà BĐS này đem lại?\n\nTrả về JSON:\n{\n  \"segment\": \"\",\n  \"design_style\": \"\",\n  \"premium_materials\": [],\n  \"luxury_amenities\": [],\n  \"view_type\": \"\",\n  \"lifestyle\": \"\",\n  \"improvements\": []\n}",
+        "enhancement": "Tạo ảnh bất động sản hạng sang đẳng cấp:\n\n## KHÔNG GIAN:\n- Sang trọng, tinh tế, exclusive\n- Nhấn mạnh chi tiết cao cấp\n- Ánh sáng dramatic, artistic\n\n## CON NGƯỜI:\n- Cặp đôi thượng lưu Việt Nam/Châu Á\n- Elegant, sophisticated\n- Enjoying luxury lifestyle:\n  + Thưởng rượu bên hồ bơi\n  + Đọc sách trong thư viện\n  + Dinner party với bạn bè\n- Trang phục smart casual hoặc semi-formal\n\n## STYLE:\n- Magazine-quality photography\n- Architectural photography style\n- Dramatic lighting, artistic composition"
+      },
+      "enhancementRules": {
+        "addPeopleIfEmpty": true,
+        "peopleEthnicity": "Vietnamese/Asian",
+        "peopleStyle": "affluent, sophisticated, elegant",
+        "peopleTypes": [
+          "elegant couple enjoying wine by pool",
+          "sophisticated woman in luxury living room",
+          "family entertaining guests at dinner party",
+          "gentleman in home office/library"
+        ],
+        "colorEnhancement": "rich, sophisticated color palette",
+        "lightingStyle": "dramatic architectural lighting, golden hour"
+      }
+    }
+  },
+  
+  "customPrompts": {
+    "enabled": false,
+    "analysisPrompt": "",
+    "enhancementPrompt": ""
+  }
+}

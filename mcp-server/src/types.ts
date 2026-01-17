@@ -8,12 +8,12 @@ export interface ImageGenerationRequest {
   prompt: string;
   inputImage?: string;
   outputCount?: number;
-  mode: 'generate' | 'edit' | 'restore';
+  mode: "generate" | "edit" | "restore";
   // Batch generation options
   styles?: string[];
   variations?: string[];
-  format?: 'grid' | 'separate';
-  fileFormat?: 'png' | 'jpeg';
+  format?: "grid" | "separate";
+  fileFormat?: "png" | "jpeg";
   seed?: number;
   // Preview options
   preview?: boolean;
@@ -29,7 +29,8 @@ export interface ImageGenerationResponse {
 
 export interface AuthConfig {
   apiKey: string;
-  keyType: 'GEMINI_API_KEY' | 'GOOGLE_API_KEY';
+  keyType: "GEMINI_API_KEY" | "GOOGLE_API_KEY" | "LOCAL_PROXY";
+  baseUrl?: string;
 }
 
 export interface FileSearchResult {
@@ -69,4 +70,139 @@ export interface DiagramPromptArgs {
   complexity?: string;
   colors?: string;
   annotations?: string;
+}
+
+// ============================================
+// Image Enhancement Types
+// ============================================
+
+export interface EnhancementPreset {
+  name: string;
+  description: string;
+  systemPrompt: {
+    analysis: string;
+    enhancement: string;
+  };
+  enhancementRules: EnhancementRules;
+}
+
+export interface EnhancementRules {
+  addPeopleIfEmpty: boolean;
+  peopleEthnicity?: string;
+  peopleStyle?: string;
+  peopleTypes?: string[];
+  addHumanElements?: boolean;
+  humanElements?: string[];
+  addModelIfRelevant?: boolean;
+  colorEnhancement: string;
+  lightingStyle: string;
+}
+
+export interface EnhancementConfig {
+  version: string;
+  activePreset: string;
+  globalSettings: {
+    analyzerModel: string;
+    enhancerModel: string;
+    outputFormat: "png" | "jpeg";
+    maxConcurrentImages: number;
+    saveAnalysisReport: boolean;
+    locale: string;
+    organizeByCategory?: boolean;
+  };
+  categories?: Record<string, CategoryDefinition>;
+  presets: Record<string, EnhancementPreset>;
+  customPrompts: {
+    enabled: boolean;
+    analysisPrompt: string;
+    enhancementPrompt: string;
+  };
+}
+
+export interface ImageAnalysisResult {
+  success: boolean;
+  imagePath: string;
+  analysis?: Record<string, unknown>;
+  rawAnalysis?: string;
+  classification?: ImageClassification;
+  error?: string;
+}
+
+export interface ImageEnhancementRequest {
+  inputPath: string;
+  outputPath?: string;
+  preset?: string;
+  customAnalysisPrompt?: string;
+  customEnhancementPrompt?: string;
+  recursive?: boolean;
+  preview?: boolean;
+  noPreview?: boolean;
+  analyzeOnly?: boolean;
+}
+
+export interface ImageEnhancementResponse {
+  success: boolean;
+  message: string;
+  processedImages: ProcessedImage[];
+  errors?: string[];
+}
+
+export interface ProcessedImage {
+  originalPath: string;
+  enhancedPath?: string;
+  analysisPath?: string;
+  analysis?: Record<string, unknown>;
+  error?: string;
+}
+
+export interface EnhanceImageArgs {
+  input: string;
+  output?: string;
+  preset?: string;
+  recursive?: boolean;
+  analyzeOnly?: boolean;
+  preview?: boolean;
+}
+
+export interface AnalyzeImageArgs {
+  input: string;
+  preset?: string;
+  recursive?: boolean;
+}
+
+// ============================================
+// Image Classification Types
+// ============================================
+
+export type ImageCategory =
+  | "landscape"
+  | "portrait"
+  | "restaurant"
+  | "hotel"
+  | "beach"
+  | "island"
+  | "tourist-attraction"
+  | "floating-house"
+  | "seafood"
+  | "food"
+  | "room"
+  | "pool"
+  | "activity"
+  | "transport"
+  | "event"
+  | "product"
+  | "other";
+
+export interface CategoryDefinition {
+  name: string;
+  nameVi: string;
+  keywords: string[];
+  folderName: string;
+}
+
+export interface ImageClassification {
+  category: ImageCategory;
+  confidence: number;
+  subcategory?: string;
+  tags?: string[];
 }
