@@ -15,6 +15,8 @@ export interface ImageGenerationRequest {
   format?: "grid" | "separate";
   fileFormat?: "png" | "jpeg";
   seed?: number;
+  // Generation config
+  temperature?: number; // 0.0-2.0, default 1.0 (recommended for Gemini 3)
   // Preview options
   preview?: boolean;
   noPreview?: boolean;
@@ -205,4 +207,53 @@ export interface ImageClassification {
   confidence: number;
   subcategory?: string;
   tags?: string[];
+}
+
+// ============================================
+// Image Translation Types
+// ============================================
+
+export type TranslationLanguage =
+  | "auto"
+  | "zh"
+  | "en"
+  | "vi"
+  | "ja"
+  | "ko"
+  | "th"
+  | "id"
+  | "ms"
+  | "fr"
+  | "de"
+  | "es"
+  | "pt"
+  | "ru"
+  | "ar";
+
+export type TranslationContext =
+  | "general"
+  | "comic"
+  | "game"
+  | "document"
+  | "menu"
+  | "signage"
+  | "product"
+  | "ui"
+  | "social";
+
+export interface ImageTranslationRequest {
+  inputImage: string;
+  sourceLanguage?: TranslationLanguage;
+  targetLanguage: TranslationLanguage;
+  context?: TranslationContext;
+  temperature?: number;
+  preview?: boolean;
+  noPreview?: boolean;
+}
+
+export interface ImageTranslationResponse {
+  success: boolean;
+  message: string;
+  generatedFiles?: string[];
+  error?: string;
 }

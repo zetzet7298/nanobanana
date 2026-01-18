@@ -11,6 +11,10 @@ import {
   ImageGenerationResponse,
   AuthConfig,
   StorySequenceArgs,
+  ImageTranslationRequest,
+  ImageTranslationResponse,
+  TranslationLanguage,
+  TranslationContext,
 } from "./types.js";
 import { exec } from "child_process";
 import { promisify } from "util";
@@ -73,6 +77,7 @@ export class ImageGenerator {
   private async callLocalProxyAPI(
     prompt: string,
     imageBase64?: string,
+    temperature?: number,
   ): Promise<{ imageData?: string; error?: string }> {
     try {
       const proxyModel = await this.fetchImageModelFromProxy();
@@ -92,6 +97,17 @@ export class ImageGenerator {
         });
       }
 
+      const generationConfig: {
+        responseModalities: string[];
+        temperature?: number;
+      } = {
+        responseModalities: ["TEXT", "IMAGE"],
+      };
+      if (temperature !== undefined) {
+        generationConfig.temperature = temperature;
+        console.error(`DEBUG - Using temperature: ${temperature}`);
+      }
+
       const requestBody = {
         contents: [
           {
@@ -99,9 +115,7 @@ export class ImageGenerator {
             parts,
           },
         ],
-        generationConfig: {
-          responseModalities: ["TEXT", "IMAGE"],
-        },
+        generationConfig,
       };
 
       const response = await fetch(
@@ -227,13 +241,22 @@ export class ImageGenerator {
     const openaiApiBase = process.env.OPENAI_API_BASE;
     const openaiApiKey = process.env.OPENAI_API_KEY;
     if (openaiApiBase && openaiApiKey) {
-      console.error(
-        "✓ Found OPENAI_API_BASE + OPENAI_API_KEY (local proxy mode)",
-      );
+      // Strip /v1 suffix if present - nanobanana uses /v1beta endpoints
+      let baseUrl = openaiApiBase;
+      if (baseUrl.endsWith("/v1")) {
+        baseUrl = baseUrl.slice(0, -3);
+        console.error(
+          "✓ Found OPENAI_API_BASE + OPENAI_API_KEY (local proxy mode, stripped /v1 suffix)",
+        );
+      } else {
+        console.error(
+          "✓ Found OPENAI_API_BASE + OPENAI_API_KEY (local proxy mode)",
+        );
+      }
       return {
         apiKey: openaiApiKey,
         keyType: "LOCAL_PROXY",
-        baseUrl: openaiApiBase,
+        baseUrl,
       };
     }
 
@@ -399,7 +422,7 @@ export class ImageGenerator {
 
           if (this.useLocalProxy) {
             // Use local proxy API
-            const result = await this.callLocalProxyAPI(currentPrompt);
+            const result = await this.callLocalProxyAPI(currentPrompt, undefined, request.temperature);
             if (result.imageData) {
               imageBase64 = result.imageData;
               console.error("DEBUG - Found image data from local proxy");
@@ -603,7 +626,7 @@ export class ImageGenerator {
 
           if (this.useLocalProxy) {
             // Use local proxy API
-            const result = await this.callLocalProxyAPI(stepPrompt);
+            const result = await this.callLocalProxyAPI(stepPrompt, undefined, request.temperature);
             if (result.imageData) {
               imageBase64 = result.imageData;
               console.error(
@@ -747,6 +770,7 @@ export class ImageGenerator {
         const result = await this.callLocalProxyAPI(
           request.prompt,
           inputImageBase64,
+          request.temperature,
         );
         if (result.imageData) {
           resultImageBase64 = result.imageData;
@@ -838,6 +862,243 @@ export class ImageGenerator {
       return {
         success: false,
         message: `Failed to ${request.mode} image`,
+        error: this.handleApiError(error),
+      };
+    }
+  }
+
+  private getLanguageName(code: TranslationLanguage): string {
+    const languageNames: Record<TranslationLanguage, string> = {
+      auto: "auto-detect",
+      zh: "Chinese",
+      en: "English",
+      vi: "Vietnamese",
+      ja: "Japanese",
+      ko: "Korean",
+      th: "Thai",
+      id: "Indonesian",
+      ms: "Malay",
+      fr: "French",
+      de: "German",
+      es: "Spanish",
+      pt: "Portuguese",
+      ru: "Russian",
+      ar: "Arabic",
+    };
+    return languageNames[code] || code;
+  }
+
+  private getContextGuidelines(context: TranslationContext): string {
+    const guidelines: Record<TranslationContext, string> = {
+      general: `Use natural, everyday language appropriate for general content.`,
+      comic: `This is a COMIC/MANGA image. Translation guidelines:
+   - Use informal, conversational tone for dialogues
+   - Preserve onomatopoeia style (translate or keep original based on context)
+   - Sound effects can be romanized or translated
+   - Emotion expressions should feel natural in target language
+   - Keep character voice/personality consistent`,
+      game: `This is a GAME interface/screenshot. Translation guidelines:
+   - Use gaming terminology familiar to players
+   - Keep UI terms concise to fit button/menu spaces
+   - Maintain action-oriented language for commands
+   - Stats, skills, items should use standard gaming conventions
+   - Consider character limits for UI elements`,
+      document: `This is a FORMAL DOCUMENT. Translation guidelines:
+   - Use formal, professional language
+   - Maintain document structure and formatting
+   - Technical terms should be accurately translated
+   - Keep legal/official terminology precise
+   - Preserve numbering and reference systems`,
+      menu: `This is a RESTAURANT/FOOD MENU. Translation guidelines:
+   - Translate dish names with descriptions
+   - Keep prices and measurements unchanged
+   - Food terminology should be appetizing
+   - Include original name in parentheses if helpful
+   - Allergen/dietary info must be accurate`,
+      signage: `This is a SIGN/BANNER. Translation guidelines:
+   - Keep messages concise and impactful
+   - Directional signs should be clear
+   - Warning/safety text must be accurate
+   - Business names may be kept or transliterated
+   - Contact info (phone, website) unchanged`,
+      product: `This is a PRODUCT LABEL/PACKAGING. Translation guidelines:
+   - Product name may be kept or translated
+   - Ingredients/specifications must be accurate
+   - Marketing claims should be compelling
+   - Safety warnings must be precise
+   - Keep brand names unchanged`,
+      ui: `This is a SOFTWARE/APP INTERFACE. Translation guidelines:
+   - Use standard UI/UX terminology
+   - Keep button text concise
+   - Error messages should be helpful
+   - Menu items need consistent terminology
+   - Consider text expansion in target language`,
+      social: `This is SOCIAL MEDIA CONTENT. Translation guidelines:
+   - Use casual, engaging tone
+   - Hashtags may be translated or kept
+   - Emojis and mentions unchanged
+   - Slang/trendy expressions adapted to target culture
+   - Keep usernames/handles unchanged`,
+    };
+    return guidelines[context] || guidelines.general;
+  }
+
+  async translateImage(
+    request: ImageTranslationRequest,
+  ): Promise<ImageTranslationResponse> {
+    try {
+      if (!request.inputImage) {
+        return {
+          success: false,
+          message: "Input image file is required for translation",
+          error: "Missing inputImage parameter",
+        };
+      }
+
+      const fileResult = FileHandler.findInputFile(request.inputImage);
+      if (!fileResult.found) {
+        return {
+          success: false,
+          message: `Input image not found: ${request.inputImage}`,
+          error: `Searched in: ${fileResult.searchedPaths.join(", ")}`,
+        };
+      }
+
+      const outputPath = FileHandler.ensureOutputDirectory();
+      const inputImageBase64 = await FileHandler.readImageAsBase64(
+        fileResult.filePath!,
+      );
+
+      const sourceLang = request.sourceLanguage || "zh";
+      const targetLang = request.targetLanguage || "vi";
+      const context = request.context || "general";
+      const sourceLanguageName = this.getLanguageName(sourceLang);
+      const targetLanguageName = this.getLanguageName(targetLang);
+      const contextGuidelines = this.getContextGuidelines(context);
+
+      const translationPrompt = `You are an expert image translator. Your task is to translate ALL text in this image from ${sourceLanguageName} to ${targetLanguageName}.
+
+CONTENT TYPE: ${context.toUpperCase()}
+${contextGuidelines}
+
+CRITICAL REQUIREMENTS:
+1. PRESERVE THE ORIGINAL IMAGE: Keep at least 95% of the original image unchanged - same layout, colors, graphics, icons, logos, backgrounds, and all visual elements
+2. ONLY CHANGE THE TEXT: Replace all ${sourceLanguageName} text with accurate ${targetLanguageName} translations
+3. MATCH TEXT STYLE: The translated text must match the original text's:
+   - Font style (bold, italic, etc.)
+   - Font size (proportional to space)
+   - Text color
+   - Text position and alignment
+   - Text effects (shadows, outlines, etc.)
+4. QUALITY: Ensure translations are natural and contextually appropriate for ${context} content
+5. COMPLETENESS: Translate ALL visible text, including:
+   - Main headings and titles
+   - Body text and paragraphs
+   - Labels and captions
+   - Buttons and UI elements
+   - Watermarks and small text
+
+Generate a new image that is virtually identical to the original, with only the text translated to ${targetLanguageName}.`;
+
+      let resultImageBase64: string | undefined;
+
+      if (this.useLocalProxy) {
+        const result = await this.callLocalProxyAPI(
+          translationPrompt,
+          inputImageBase64,
+          request.temperature,
+        );
+        if (result.imageData) {
+          resultImageBase64 = result.imageData;
+          console.error("DEBUG - Found translated image from local proxy");
+        } else if (result.error) {
+          return {
+            success: false,
+            message: "Failed to translate image",
+            error: result.error,
+          };
+        }
+      } else {
+        const response = await this.ai!.models.generateContent({
+          model: this.modelName,
+          contents: [
+            {
+              role: "user",
+              parts: [
+                { text: translationPrompt },
+                {
+                  inlineData: {
+                    data: inputImageBase64,
+                    mimeType: "image/png",
+                  },
+                },
+              ],
+            },
+          ],
+        });
+
+        console.error(
+          "DEBUG - Translation API Response structure:",
+          JSON.stringify(response, null, 2),
+        );
+
+        if (response.candidates && response.candidates[0]?.content?.parts) {
+          for (const part of response.candidates[0].content.parts) {
+            if (part.inlineData?.data) {
+              resultImageBase64 = part.inlineData.data;
+              console.error("DEBUG - Found translated image in inlineData");
+              break;
+            } else if (part.text && this.isValidBase64ImageData(part.text)) {
+              resultImageBase64 = part.text;
+              console.error(
+                "DEBUG - Found translated image in text field (fallback)",
+              );
+              break;
+            }
+          }
+        }
+      }
+
+      if (resultImageBase64) {
+        const generatedFiles: string[] = [];
+        const filename = FileHandler.generateFilename(
+          `translated_${sourceLang}_to_${targetLang}`,
+          "png",
+          0,
+        );
+        const fullPath = await FileHandler.saveImageFromBase64(
+          resultImageBase64,
+          outputPath,
+          filename,
+        );
+        generatedFiles.push(fullPath);
+        console.error("DEBUG - Translated image saved to:", fullPath);
+
+        if (
+          request.preview &&
+          !request.noPreview &&
+          generatedFiles.length > 0
+        ) {
+          await this.openImagePreview(generatedFiles[0]);
+        }
+
+        return {
+          success: true,
+          message: `Successfully translated image from ${sourceLanguageName} to ${targetLanguageName}`,
+          generatedFiles,
+        };
+      }
+
+      return {
+        success: false,
+        message: "Failed to translate image",
+        error: "No image data in response",
+      };
+    } catch (error: unknown) {
+      console.error("DEBUG - Error in translateImage:", error);
+      return {
+        success: false,
+        message: "Failed to translate image",
         error: this.handleApiError(error),
       };
     }
