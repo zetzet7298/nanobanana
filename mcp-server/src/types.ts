@@ -140,6 +140,7 @@ export interface ImageEnhancementRequest {
   preview?: boolean;
   noPreview?: boolean;
   analyzeOnly?: boolean;
+  temperature?: number;
 }
 
 export interface ImageEnhancementResponse {
@@ -154,6 +155,7 @@ export interface ProcessedImage {
   enhancedPath?: string;
   analysisPath?: string;
   analysis?: Record<string, unknown>;
+  enhancementPrompt?: string;
   error?: string;
 }
 

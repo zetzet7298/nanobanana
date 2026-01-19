@@ -157,11 +157,20 @@ export class ImageEnhancer {
     imageBase64: string,
     mimeType: string,
     prompt: string,
+    temperature?: number,
   ): Promise<{ imageData?: string; error?: string }> {
     try {
       const proxyModel = await this.fetchImageModelFromProxy();
       const modelToUse = process.env.NANOBANANA_ENHANCER_MODEL || proxyModel || this.modelName;
       console.error(`DEBUG - Using model for enhancement: ${modelToUse}`);
+
+      const generationConfig: { responseModalities: string[]; temperature?: number } = {
+        responseModalities: ["TEXT", "IMAGE"],
+      };
+      if (temperature !== undefined) {
+        generationConfig.temperature = temperature;
+        console.error(`DEBUG - Enhancement using temperature: ${temperature}`);
+      }
 
       const requestBody = {
         contents: [
@@ -178,9 +187,7 @@ export class ImageEnhancer {
             ],
           },
         ],
-        generationConfig: {
-          responseModalities: ["TEXT", "IMAGE"],
-        },
+        generationConfig,
       };
 
       const response = await fetch(
@@ -283,6 +290,7 @@ export class ImageEnhancer {
     imagePath: string,
     presetName?: string,
     customEnhancementPrompt?: string,
+    temperature?: number,
   ): Promise<ProcessedImage> {
     const result: ProcessedImage = {
       originalPath: imagePath,
@@ -325,6 +333,8 @@ export class ImageEnhancer {
         customEnhancementPrompt,
       );
 
+      result.enhancementPrompt = enhancementPrompt;
+
       const imageBase64 = await FileHandler.readImageAsBase64(imagePath);
       const mimeType = this.getMimeType(imagePath);
 
@@ -332,6 +342,7 @@ export class ImageEnhancer {
         imageBase64,
         mimeType,
         enhancementPrompt,
+        temperature,
       );
 
       if (enhanceResult.error) {
@@ -436,6 +447,7 @@ export class ImageEnhancer {
                 img,
                 request.preset,
                 request.customEnhancementPrompt,
+                request.temperature,
               ),
             ),
           );
