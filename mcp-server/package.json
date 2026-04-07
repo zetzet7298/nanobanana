@@ -3,6 +3,17 @@
   "version": "1.0.11",
   "type": "module",
   "description": "MCP server for Nano Banana extension - Image Generation & Enhancement Library",
+  "license": "Apache-2.0",
+  "author": "Nanobanana contributors",
+  "homepage": "https://github.com/zetzet7298/nanobanana",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zetzet7298/nanobanana.git",
+    "directory": "mcp-server"
+  },
+  "bugs": {
+    "url": "https://github.com/zetzet7298/nanobanana/issues"
+  },
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
   "exports": {

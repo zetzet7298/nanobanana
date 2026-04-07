@@ -1,8 +1,18 @@
 {
   "name": "nanobanana-extension",
   "version": "1.0.10",
+  "private": true,
   "type": "module",
   "description": "Gemini CLI extension for Nano Banana models",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zetzet7298/nanobanana.git"
+  },
+  "homepage": "https://github.com/zetzet7298/nanobanana",
+  "bugs": {
+    "url": "https://github.com/zetzet7298/nanobanana/issues"
+  },
   "scripts": {
     "build": "cd mcp-server && npm run build",
     "install-deps": "cd mcp-server && npm install",

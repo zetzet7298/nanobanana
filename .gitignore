@@ -1,3 +1,15 @@
 dist/
 node_modules/
 nanobanana-output/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+.DS_Store
+.pi/skills/**/venv/
+__pycache__/
+*.pyc
+mcp-server/npm
+mcp-server/tsc
+mcp-server/nanobanana-mcp-server@*

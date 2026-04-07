@@ -1,0 +1,12 @@
+# Publish only built/runtime assets
+src/
+node_modules/
+nanobanana-output/
+*.log
+.env
+.env.*
+*.tsbuildinfo
+test-grok2api.sh
+npm
+tsc
+nanobanana-mcp-server@*
