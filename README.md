@@ -2,48 +2,83 @@
 > Nano Banana Pro (`gemini-3-pro-image-preview`) is now supported in this extension (v1.0.10+)!
 >
 > Set the `NANOBANANA_MODEL` environment variable to `gemini-3-pro-image-preview` to use it.
+>
+> **NEW in v1.1.0**: Grok2API provider support! Generate images locally with `grok-imagine-1.0-fast` (1-10 images per request).
 
 # Nano Banana - Gemini CLI Extension
 
-A professional Gemini CLI extension for generating and manipulating images using the Nano Banana models.
+A professional Gemini CLI extension for generating and manipulating images using multiple AI providers including Gemini and Grok2API.
 
 ## ✨ Features
 
 - **🎨 Text-to-Image Generation**: Create stunning images from descriptive prompts
 - **✏️ Image Editing**: Modify existing images with natural language instructions
 - **🔧 Image Restoration**: Restore and enhance old or damaged photos
+- **🚀 Batch Generation**: Generate 1-10 images at once with Grok2API fast model
+- **🔍 Image Analysis**: Analyze and classify images with AI
+- **✨ Image Enhancement**: Enhance images with preset configurations
 - **📁 Smart File Management**: User-friendly filenames with automatic duplicate prevention
+
+## 🌟 Supported Providers
+
+### 1. Grok2API (Local, Recommended for Development)
+- ✅ Batch generation (1-10 images)
+- ✅ Fast model: `grok-imagine-1.0-fast`
+- ✅ Image editing: `grok-imagine-1.0-edit`
+- ✅ Multiple analysis models: grok-3, grok-4, grok-4.1
+- ✅ Completely local, no API costs
+
+### 2. Local Proxy (Gemini Format)
+- ✅ High quality Gemini models
+- ✅ Local control
+- ✅ Flexible backend
+
+### 3. Google Gemini API (Direct)
+- ✅ Easiest setup
+- ✅ Latest features
+- ✅ Enterprise reliability
+
+📚 **[Compare Providers](docs/PROVIDER_COMPARISON.md)** | **[Grok2API Guide](docs/GROK2API_PROVIDER.md)** | **[Quick Start](docs/QUICK_START_GROK.md)**
 
 ## 📋 Prerequisites
 
 1. **Gemini CLI** installed and configured
 2. **Node.js 20+** and npm
-3. **API Key**: Set one of these environment variables:
-   - `OPENAI_API_BASE` + `OPENAI_API_KEY` (for local proxy - highest priority)
-   - `NANOBANANA_GEMINI_API_KEY` (recommended for Gemini API key users who
-     normally authenticate to Gemini CLI using the "Login with Google" option)
-   - `NANOBANANA_GOOGLE_API_KEY` (recommended for Vertex API key users who
-     normally authenticate to Gemini CLI using the "Login with Google" option)
-   - `GEMINI_API_KEY` (fallback)
-   - `GOOGLE_API_KEY` (fallback)
+3. **API Key**: Choose one provider:
 
-### Local Proxy Mode
+### Option 1: Grok2API (Recommended)
+```bash
+export GROK_API_BASE_URL="http://localhost:8011"
+export GROK_API_KEY="your-grok-api-key"
+export GROK_IMAGE_MODEL="grok-imagine-1.0-fast"  # Optional
+export GROK_ANALYZER_MODEL="grok-4"              # Optional
+```
 
-To use a local proxy server (e.g., CLIProxyAPI) instead of the Gemini API directly:
-
+### Option 2: Local Proxy (Gemini)
 ```bash
 export OPENAI_API_BASE="http://localhost:8317"
 export OPENAI_API_KEY="your-proxy-api-key"
 ```
 
-The extension will automatically use the `/v1beta` Gemini-compatible API endpoints and detect available image models via `/v1/models`.
+### Option 3: Google Gemini API
+```bash
+export NANOBANANA_GEMINI_API_KEY="your-gemini-key"
+# Or use one of these fallbacks:
+# NANOBANANA_GOOGLE_API_KEY
+# GEMINI_API_KEY
+# GOOGLE_API_KEY
+```
+
+**Priority Order**: GROK2API > LOCAL_PROXY > GEMINI
 
 For authentication setup, see the [official Gemini CLI documentation](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/authentication.md).
 
 ### Key Components
 
 - **`index.ts`**: MCP server using `@modelcontextprotocol/sdk` for professional protocol handling
-- **`imageGenerator.ts`**: Handles all Gemini API interactions and response processing
+- **`imageGenerator.ts`**: Handles all provider interactions and response processing
+- **`imageAnalyzer.ts`**: Image analysis and classification
+- **`imageEnhancer.ts`**: Image enhancement with presets
 - **`fileHandler.ts`**: Manages file I/O, smart filename generation, and file searching
 - **`types.ts`**: Shared TypeScript interfaces for type safety
 

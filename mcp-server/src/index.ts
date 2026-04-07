@@ -85,6 +85,19 @@ class NanoBananaServer {
                   maximum: 8,
                   default: 1,
                 },
+                size: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description:
+                    "Output image size. Use 1792x1024 or 1024x1792 for less blurry large renders.",
+                  default: "1024x1024",
+                },
                 styles: {
                   type: "array",
                   items: { type: "string" },
@@ -132,6 +145,18 @@ class NanoBananaServer {
                   type: "string",
                   description: "The filename of the input image to edit",
                 },
+                size: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description: "Output image size for edited image",
+                  default: "1024x1024",
+                },
                 preview: {
                   type: "boolean",
                   description:
@@ -156,6 +181,18 @@ class NanoBananaServer {
                 file: {
                   type: "string",
                   description: "The filename of the input image to restore",
+                },
+                size: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description: "Output image size for restored image",
+                  default: "1024x1024",
                 },
                 preview: {
                   type: "boolean",
@@ -239,8 +276,20 @@ class NanoBananaServer {
                 },
                 size: {
                   type: "string",
-                  description: 'Pattern tile size (e.g., "256x256", "512x512")',
+                  description: 'Pattern tile size for prompt wording (e.g., "256x256", "512x512")',
                   default: "256x256",
+                },
+                outputSize: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description: "Rendered output image size for the generated pattern",
+                  default: "1024x1024",
                 },
                 type: {
                   type: "string",
@@ -300,6 +349,18 @@ class NanoBananaServer {
                   minimum: 2,
                   maximum: 8,
                   default: 4,
+                },
+                size: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description: "Output image size for each step",
+                  default: "1024x1024",
                 },
                 type: {
                   type: "string",
@@ -396,6 +457,18 @@ class NanoBananaServer {
                   enum: ["minimal", "detailed"],
                   description: "Label and annotation level",
                   default: "detailed",
+                },
+                size: {
+                  type: "string",
+                  enum: [
+                    "1280x720",
+                    "720x1280",
+                    "1792x1024",
+                    "1024x1792",
+                    "1024x1024",
+                  ],
+                  description: "Output image size for diagram render",
+                  default: "1024x1024",
                 },
                 preview: {
                   type: "boolean",
@@ -508,6 +581,7 @@ class NanoBananaServer {
               prompt: args?.prompt as string,
               outputCount: (args?.outputCount as number) || 1,
               mode: "generate",
+              size: args?.size as ImageGenerationRequest["size"],
               styles: args?.styles as string[],
               variations: args?.variations as string[],
               format: (args?.format as "grid" | "separate") || "separate",
@@ -517,6 +591,7 @@ class NanoBananaServer {
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            imageRequest.size = this.inferImageSize(imageRequest);
             response =
               await this.imageGenerator.generateTextToImage(imageRequest);
             break;
@@ -527,11 +602,13 @@ class NanoBananaServer {
               prompt: args?.prompt as string,
               inputImage: args?.file as string,
               mode: "edit",
+              size: args?.size as ImageGenerationRequest["size"],
               preview: args?.preview as boolean,
               noPreview:
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            editRequest.size = this.inferImageSize(editRequest);
             response = await this.imageGenerator.editImage(editRequest);
             break;
           }
@@ -541,11 +618,13 @@ class NanoBananaServer {
               prompt: args?.prompt as string,
               inputImage: args?.file as string,
               mode: "restore",
+              size: args?.size as ImageGenerationRequest["size"],
               preview: args?.preview as boolean,
               noPreview:
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            restoreRequest.size = this.inferImageSize(restoreRequest);
             response = await this.imageGenerator.editImage(restoreRequest);
             break;
           }
@@ -555,6 +634,7 @@ class NanoBananaServer {
               prompt: this.buildIconPrompt(args),
               outputCount: (args?.sizes as number[])?.length || 1,
               mode: "generate",
+              size: "1024x1024",
               fileFormat: (args?.format as "png" | "jpeg") || "png",
               preview: args?.preview as boolean,
               noPreview:
@@ -571,11 +651,13 @@ class NanoBananaServer {
               prompt: this.buildPatternPrompt(args),
               outputCount: 1,
               mode: "generate",
+              size: args?.outputSize as ImageGenerationRequest["size"],
               preview: args?.preview as boolean,
               noPreview:
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            patternRequest.size = this.inferImageSize(patternRequest);
             response =
               await this.imageGenerator.generateTextToImage(patternRequest);
             break;
@@ -586,12 +668,14 @@ class NanoBananaServer {
               prompt: args?.prompt as string,
               outputCount: (args?.steps as number) || 4,
               mode: "generate",
+              size: args?.size as ImageGenerationRequest["size"],
               variations: ["sequence-step"],
               preview: args?.preview as boolean,
               noPreview:
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            storyRequest.size = this.inferImageSize(storyRequest);
             response = await this.imageGenerator.generateStorySequence(
               storyRequest,
               args,
@@ -604,11 +688,13 @@ class NanoBananaServer {
               prompt: this.buildDiagramPrompt(args),
               outputCount: 1,
               mode: "generate",
+              size: args?.size as ImageGenerationRequest["size"],
               preview: args?.preview as boolean,
               noPreview:
                 (args?.noPreview as boolean) ||
                 (args?.["no-preview"] as boolean),
             };
+            diagramRequest.size = this.inferImageSize(diagramRequest);
             response =
               await this.imageGenerator.generateTextToImage(diagramRequest);
             break;
@@ -773,6 +859,50 @@ class NanoBananaServer {
     prompt += ", clean technical illustration, clear visual hierarchy";
 
     return prompt;
+  }
+
+  private inferImageSize(request: ImageGenerationRequest): NonNullable<ImageGenerationRequest["size"]> {
+    if (request.size) {
+      return request.size;
+    }
+
+    const prompt = request.prompt.toLowerCase();
+
+    if (
+      request.mode !== "generate" ||
+      prompt.includes("icon") ||
+      prompt.includes("logo") ||
+      prompt.includes("favicon") ||
+      prompt.includes("app icon") ||
+      prompt.includes("square")
+    ) {
+      return "1024x1024";
+    }
+
+    if (
+      prompt.includes("portrait") ||
+      prompt.includes("phone wallpaper") ||
+      prompt.includes("poster") ||
+      prompt.includes("vertical") ||
+      prompt.includes("story") ||
+      prompt.includes("9:16")
+    ) {
+      return "1024x1792";
+    }
+
+    if (
+      prompt.includes("landscape") ||
+      prompt.includes("wide") ||
+      prompt.includes("cinematic") ||
+      prompt.includes("banner") ||
+      prompt.includes("hero image") ||
+      prompt.includes("wallpaper") ||
+      prompt.includes("16:9")
+    ) {
+      return "1792x1024";
+    }
+
+    return "1024x1024";
   }
 
   private setupErrorHandling() {

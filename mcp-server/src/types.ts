@@ -9,6 +9,7 @@ export interface ImageGenerationRequest {
   inputImage?: string;
   outputCount?: number;
   mode: "generate" | "edit" | "restore";
+  size?: "1280x720" | "720x1280" | "1792x1024" | "1024x1792" | "1024x1024";
   // Batch generation options
   styles?: string[];
   variations?: string[];
@@ -31,7 +32,7 @@ export interface ImageGenerationResponse {
 
 export interface AuthConfig {
   apiKey: string;
-  keyType: "GEMINI_API_KEY" | "GOOGLE_API_KEY" | "LOCAL_PROXY";
+  keyType: "GEMINI_API_KEY" | "GOOGLE_API_KEY" | "LOCAL_PROXY" | "GROK2API";
   baseUrl?: string;
 }
 

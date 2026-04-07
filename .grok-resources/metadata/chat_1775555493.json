@@ -1,0 +1,35 @@
+{
+  "id": "132b8c98-6417-43a4-94e5-bbce6bb1fe0e",
+  "object": "chat.completion",
+  "created": 1775555497,
+  "model": "grok-4",
+  "system_fingerprint": "EJE76fIU9pV1LQ7B5bFji0MZKBwCy9z69ej3BRTQ1I4=",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Bức ảnh cho thấy một nhà hàng lớn nằm ven đường, được chụp từ phía trước vào một ngày trời nắng đẹp với bầu trời xanh và nhiều mây trắng.\n\n**Tên nhà hàng:**  \nPhía trên mái nhà là bảng hiệu lớn bằng chữ cái nổi màu trắng viền đỏ: **“NHÀ HÀNG HỒNG NHÂN 4”**, kèm theo số điện thoại **0942.704.480**.\n\n**Kiến trúc chính:**  \n- Nhà hàng có thiết kế khá rộng với phần mái che lớn làm từ tấm tôn hoặc vật liệu màu đồng/nâu gợn sóng (kiểu uốn lượn liên tục).  \n- Phần mặt tiền phía dưới mở rộng, có nhiều cột trụ và khoảng sân thoáng đãng.  \n- Phía trước nhà hàng là khu vực sân vườn ngoài trời khá rộng, được bài trí nhiều bàn ghế để khách ngồi ăn uống.\n\n**Khu vực ngoài trời:**  \n- Có rất nhiều ô dù che nắng với nhiều màu sắc: trắng, vàng, hồng, xanh dương, xanh lá…  \n- Xung quanh sân trồng nhiều cây xanh, cây cảnh, chậu hoa và cây cảnh trang trí (cây cau, cây kiểng, bụi hoa giấy trắng…).  \n- Ghế và bàn ngồi được sắp xếp gọn gàng, có cả ghế nhựa màu đỏ, ghế gỗ và ghế sắt.\n\n**Chi tiết khác:**  \n- Bên phải bức ảnh có một phần mái tranh (lợp lá) kiểu nhà lá nhỏ, treo đèn lồng và có bảng hiệu phụ “HỒNG NHÂN”.  \n- Phía xa bên trái có ngọn đồi xanh mướt.  \n- Trên bầu trời có thể thấy một chiếc máy bay đang bay ngang qua.  \n- Có cột điện, dây điện, anten viễn thông và một vài tòa nhà khác ở hai bên.  \n- Phía trước là khoảng sân bê tông rộng và một phần nền đất cát.\n\nTổng thể, bức ảnh thể hiện không khí thoáng đãng, mát mẻ, mang phong cách nhà hàng vườn ven đường điển hình ở Việt Nam, rất phù hợp để tổ chức tiệc ngoài trời hoặc ăn uống gia đình, bạn bè.",
+        "refusal": null,
+        "annotations": []
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 19,
+    "completion_tokens": 514,
+    "total_tokens": 533,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "text_tokens": 19,
+      "audio_tokens": 0,
+      "image_tokens": 0
+    },
+    "completion_tokens_details": {
+      "text_tokens": 514,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0
+    }
+  }
+}

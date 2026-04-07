@@ -6,7 +6,14 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { FileSearchResult } from "./types.js";
+import type { FileSearchResult } from "./types.js";
+
+const PNG_SIGNATURE = Buffer.from([
+  0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+]);
+const JPEG_SIGNATURE = Buffer.from([0xff, 0xd8, 0xff]);
+const WEBP_RIFF_SIGNATURE = Buffer.from([0x52, 0x49, 0x46, 0x46]);
+const WEBP_WEBP_SIGNATURE = Buffer.from([0x57, 0x45, 0x42, 0x50]);
 
 export class FileHandler {
   private static readonly OUTPUT_DIR = "nanobanana-output";
@@ -88,13 +95,44 @@ export class FileHandler {
     return fileName;
   }
 
+  private static detectImageFormat(
+    buffer: Buffer,
+  ): "png" | "jpeg" | "webp" {
+    if (buffer.subarray(0, PNG_SIGNATURE.length).equals(PNG_SIGNATURE)) {
+      return "png";
+    }
+
+    if (buffer.subarray(0, JPEG_SIGNATURE.length).equals(JPEG_SIGNATURE)) {
+      return "jpeg";
+    }
+
+    if (
+      buffer.length >= 12 &&
+      buffer.subarray(0, 4).equals(WEBP_RIFF_SIGNATURE) &&
+      buffer.subarray(8, 12).equals(WEBP_WEBP_SIGNATURE)
+    ) {
+      return "webp";
+    }
+
+    return "png";
+  }
+
   static async saveImageFromBase64(
     base64Data: string,
     outputPath: string,
     filename: string,
   ): Promise<string> {
     const buffer = Buffer.from(base64Data, "base64");
-    const fullPath = path.join(outputPath, filename);
+    const detectedFormat = this.detectImageFormat(buffer);
+    const expectedExtension =
+      detectedFormat === "jpeg"
+        ? ".jpg"
+        : detectedFormat === "webp"
+          ? ".webp"
+          : ".png";
+    const parsed = path.parse(filename);
+    const finalFilename = `${parsed.name}${expectedExtension}`;
+    const fullPath = path.join(outputPath, finalFilename);
 
     await fs.promises.writeFile(fullPath, buffer);
     return fullPath;

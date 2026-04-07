@@ -29,6 +29,7 @@ const execAsync = promisify(exec);
 
 export class ImageEnhancer {
   private useLocalProxy: boolean = false;
+  private useGrok2API: boolean = false;
   private localProxyBaseUrl: string = "";
   private localProxyApiKey: string = "";
   private config: EnhancementConfig;
@@ -36,7 +37,14 @@ export class ImageEnhancer {
   private modelName: string;
 
   constructor(authConfig: AuthConfig, config: EnhancementConfig) {
-    if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
+    if (authConfig.keyType === "GROK2API" && authConfig.baseUrl) {
+      this.useGrok2API = true;
+      this.localProxyBaseUrl = authConfig.baseUrl;
+      this.localProxyApiKey = authConfig.apiKey;
+      console.error(
+        `DEBUG - ImageEnhancer using Grok2API at: ${this.localProxyBaseUrl}`,
+      );
+    } else if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
       this.useLocalProxy = true;
       // Remove /v1 suffix if present to use /v1beta/ Gemini endpoint
       this.localProxyBaseUrl = authConfig.baseUrl.replace(/\/v1\/?$/, "");
@@ -161,10 +169,14 @@ export class ImageEnhancer {
   ): Promise<{ imageData?: string; error?: string }> {
     try {
       const proxyModel = await this.fetchImageModelFromProxy();
-      const modelToUse = process.env.NANOBANANA_ENHANCER_MODEL || proxyModel || this.modelName;
+      const modelToUse =
+        process.env.NANOBANANA_ENHANCER_MODEL || proxyModel || this.modelName;
       console.error(`DEBUG - Using model for enhancement: ${modelToUse}`);
 
-      const generationConfig: { responseModalities: string[]; temperature?: number } = {
+      const generationConfig: {
+        responseModalities: string[];
+        temperature?: number;
+      } = {
         responseModalities: ["TEXT", "IMAGE"],
       };
       if (temperature !== undefined) {
@@ -240,6 +252,59 @@ export class ImageEnhancer {
     }
   }
 
+  private async callGrok2APIForEnhancement(
+    imageBase64: string,
+    mimeType: string,
+    prompt: string,
+    filename: string,
+  ): Promise<{ imageData?: string; error?: string }> {
+    try {
+      const endpoint = `${this.localProxyBaseUrl}/v1/images/edits`;
+      const formData = new FormData();
+      const imageBuffer = Buffer.from(imageBase64, "base64");
+      const imageBlob = new Blob([imageBuffer], { type: mimeType });
+
+      formData.append(
+        "model",
+        process.env.GROK_EDIT_MODEL || "grok-imagine-1.0-edit",
+      );
+      formData.append("prompt", prompt);
+      formData.append("image", imageBlob, filename);
+      formData.append("n", "1");
+      formData.append("size", "1024x1024");
+      formData.append("response_format", "b64_json");
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.localProxyApiKey}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          `DEBUG - Grok2API enhancement error: ${response.status} - ${errorText}`,
+        );
+        return { error: `Grok2API enhancement error: ${response.status}` };
+      }
+
+      const data = (await response.json()) as {
+        data?: Array<{ b64_json?: string }>;
+      };
+
+      if (data.data?.[0]?.b64_json) {
+        return { imageData: data.data[0].b64_json };
+      }
+
+      return { error: "No image data in Grok2API enhancement response" };
+    } catch (error) {
+      console.error("DEBUG - Error calling Grok2API for enhancement:", error);
+      return { error: error instanceof Error ? error.message : String(error) };
+    }
+  }
+
   private async openImagePreview(filePath: string): Promise<void> {
     try {
       const platform = process.platform;
@@ -290,7 +355,6 @@ export class ImageEnhancer {
     imagePath: string,
     presetName?: string,
     customEnhancementPrompt?: string,
-    temperature?: number,
   ): Promise<ProcessedImage> {
     const result: ProcessedImage = {
       originalPath: imagePath,
@@ -321,9 +385,9 @@ export class ImageEnhancer {
         }
       }
 
-      if (!this.useLocalProxy) {
+      if (!this.useLocalProxy && !this.useGrok2API) {
         result.error =
-          "Direct API not supported for enhancement. Please use local proxy.";
+          "Direct API not supported for enhancement. Please use local proxy or Grok2API.";
         return result;
       }
 
@@ -333,17 +397,22 @@ export class ImageEnhancer {
         customEnhancementPrompt,
       );
 
-      result.enhancementPrompt = enhancementPrompt;
-
       const imageBase64 = await FileHandler.readImageAsBase64(imagePath);
       const mimeType = this.getMimeType(imagePath);
+      const filename = path.basename(imagePath);
 
-      const enhanceResult = await this.callProxyForEnhancement(
-        imageBase64,
-        mimeType,
-        enhancementPrompt,
-        temperature,
-      );
+      const enhanceResult = this.useGrok2API
+        ? await this.callGrok2APIForEnhancement(
+            imageBase64,
+            mimeType,
+            enhancementPrompt,
+            filename,
+          )
+        : await this.callProxyForEnhancement(
+            imageBase64,
+            mimeType,
+            enhancementPrompt,
+          );
 
       if (enhanceResult.error) {
         result.error = enhanceResult.error;
@@ -354,7 +423,7 @@ export class ImageEnhancer {
         const category = analysis.classification?.category || "other";
         const outputPath = this.getCategoryOutputPath(category);
         const baseName = path.basename(imagePath, path.extname(imagePath));
-        const filename = FileHandler.generateFilename(
+        const outputFilename = FileHandler.generateFilename(
           `enhanced_${baseName}`,
           this.config.globalSettings.outputFormat || "png",
           0,
@@ -362,7 +431,7 @@ export class ImageEnhancer {
         const fullPath = await FileHandler.saveImageFromBase64(
           enhanceResult.imageData,
           outputPath,
-          filename,
+          outputFilename,
         );
         result.enhancedPath = fullPath;
         console.error(
@@ -447,116 +516,57 @@ export class ImageEnhancer {
                 img,
                 request.preset,
                 request.customEnhancementPrompt,
-                request.temperature,
               ),
             ),
           );
         }
 
         response.processedImages.push(...batchResults);
-
-        for (const result of batchResults) {
-          if (result.error) {
-            response.errors?.push(`${result.originalPath}: ${result.error}`);
-          }
-        }
-
-        console.error(
-          `DEBUG - Processed batch ${Math.floor(i / concurrency) + 1}/${Math.ceil(images.length / concurrency)}`,
-        );
       }
 
+      response.errors = response.processedImages
+        .filter((img) => img.error)
+        .map((img) => `${img.originalPath}: ${img.error}`);
+
       const successCount = response.processedImages.filter(
-        (p) => !p.error,
+        (img) => !img.error,
       ).length;
-      const failCount = response.processedImages.length - successCount;
 
       response.success = successCount > 0;
       response.message = request.analyzeOnly
-        ? `Analyzed ${successCount} images successfully${failCount > 0 ? `, ${failCount} failed` : ""}`
-        : `Enhanced ${successCount} images successfully${failCount > 0 ? `, ${failCount} failed` : ""}`;
+        ? `Analyzed ${successCount} images successfully${response.errors.length > 0 ? `, ${response.errors.length} failed` : ""}`
+        : `Enhanced ${successCount} images successfully${response.errors.length > 0 ? `, ${response.errors.length} failed` : ""}`;
 
-      if (request.preview && !request.noPreview) {
-        for (const processed of response.processedImages) {
-          if (processed.enhancedPath) {
-            await this.openImagePreview(processed.enhancedPath);
-          }
+      if (request.preview && !request.analyzeOnly) {
+        const previewFiles = response.processedImages
+          .filter((img) => img.enhancedPath)
+          .map((img) => img.enhancedPath!);
+
+        if (previewFiles.length > 0) {
+          await Promise.all(
+            previewFiles.map((file) => this.openImagePreview(file)),
+          );
         }
       }
 
       return response;
     } catch (error) {
       console.error("DEBUG - Error processing images:", error);
-      response.message = error instanceof Error ? error.message : String(error);
+      response.message = `Failed to process images: ${error instanceof Error ? error.message : String(error)}`;
       return response;
     }
   }
 
   static loadConfig(configPath?: string): EnhancementConfig {
-    const defaultConfigPath = path.join(
-      process.cwd(),
-      "enhancement-config.json",
-    );
-    const mcpServerConfigPath = path.join(
-      __dirname,
-      "..",
-      "enhancement-config.json",
-    );
+    const defaultPath = path.join(__dirname, "..", "enhancement-config.json");
+    const targetPath = configPath || defaultPath;
 
-    const pathsToTry = [
-      configPath,
-      defaultConfigPath,
-      mcpServerConfigPath,
-    ].filter(Boolean) as string[];
-
-    for (const p of pathsToTry) {
-      if (fs.existsSync(p)) {
-        console.error(`DEBUG - Loading config from: ${p}`);
-        const content = fs.readFileSync(p, "utf-8");
-        return JSON.parse(content) as EnhancementConfig;
-      }
+    try {
+      const raw = fs.readFileSync(targetPath, "utf-8");
+      return JSON.parse(raw) as EnhancementConfig;
+    } catch (error) {
+      console.error(`DEBUG - Failed to load config from ${targetPath}:`, error);
+      throw new Error(`Enhancement config not found or invalid: ${targetPath}`);
     }
-
-    console.error("DEBUG - Using default embedded config");
-    return ImageEnhancer.getDefaultConfig();
-  }
-
-  static getDefaultConfig(): EnhancementConfig {
-    return {
-      version: "1.0.0",
-      activePreset: "default",
-      globalSettings: {
-        analyzerModel: "gemini-2.5-flash",
-        enhancerModel: "gemini-2.5-flash-image",
-        outputFormat: "png",
-        maxConcurrentImages: 3,
-        saveAnalysisReport: true,
-        locale: "vi-VN",
-      },
-      presets: {
-        default: {
-          name: "Default Enhancement",
-          description: "General purpose image enhancement",
-          systemPrompt: {
-            analysis:
-              "Analyze this image in detail. Describe the subject, context, colors, composition, and mood. Return as JSON.",
-            enhancement:
-              "Enhance this image based on the analysis. Add Asian people if empty, improve lighting and colors for marketing purposes.",
-          },
-          enhancementRules: {
-            addPeopleIfEmpty: true,
-            peopleEthnicity: "Asian",
-            peopleStyle: "natural, authentic",
-            colorEnhancement: "vibrant but natural",
-            lightingStyle: "natural daylight",
-          },
-        },
-      },
-      customPrompts: {
-        enabled: false,
-        analysisPrompt: "",
-        enhancementPrompt: "",
-      },
-    };
   }
 }

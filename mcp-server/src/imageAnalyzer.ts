@@ -18,6 +18,7 @@ import { FileHandler } from "./fileHandler.js";
 
 export class ImageAnalyzer {
   private useLocalProxy: boolean = false;
+  private useGrok2API: boolean = false;
   private localProxyBaseUrl: string = "";
   private localProxyApiKey: string = "";
   private config: EnhancementConfig;
@@ -33,7 +34,19 @@ export class ImageAnalyzer {
   ];
 
   constructor(authConfig: AuthConfig, config: EnhancementConfig) {
-    if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
+    if (authConfig.keyType === "GROK2API" && authConfig.baseUrl) {
+      this.useGrok2API = true;
+      this.localProxyBaseUrl = authConfig.baseUrl;
+      this.localProxyApiKey = authConfig.apiKey;
+      console.error(
+        `DEBUG - ImageAnalyzer using Grok2API at: ${this.localProxyBaseUrl}`,
+      );
+      // Default to grok-4 for analysis, can be overridden by env
+      this.modelName =
+        process.env.GROK_ANALYZER_MODEL ||
+        process.env.NANOBANANA_ANALYZER_MODEL ||
+        "grok-4";
+    } else if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
       this.useLocalProxy = true;
       // Remove /v1 suffix if present to use /v1beta/ Gemini endpoint
       this.localProxyBaseUrl = authConfig.baseUrl.replace(/\/v1\/?$/, "");
@@ -41,12 +54,17 @@ export class ImageAnalyzer {
       console.error(
         `DEBUG - ImageAnalyzer using local proxy at: ${this.localProxyBaseUrl}`,
       );
+      this.modelName =
+        process.env.NANOBANANA_ANALYZER_MODEL ||
+        config.globalSettings.analyzerModel ||
+        "gemini-2.5-flash";
+    } else {
+      this.modelName =
+        process.env.NANOBANANA_ANALYZER_MODEL ||
+        config.globalSettings.analyzerModel ||
+        "gemini-2.5-flash";
     }
     this.config = config;
-    this.modelName =
-      process.env.NANOBANANA_ANALYZER_MODEL ||
-      config.globalSettings.analyzerModel ||
-      "gemini-2.5-flash";
     console.error(`DEBUG - ImageAnalyzer using model: ${this.modelName}`);
   }
 
@@ -242,7 +260,21 @@ Chọn category phù hợp nhất dựa trên nội dung chính của ảnh.
 
       let analysisText: string | undefined;
 
-      if (this.useLocalProxy) {
+      if (this.useGrok2API) {
+        const result = await this.callGrok2APIForAnalysis(
+          imageBase64,
+          mimeType,
+          analysisPrompt,
+        );
+        if (result.error) {
+          return {
+            success: false,
+            imagePath,
+            error: result.error,
+          };
+        }
+        analysisText = result.text;
+      } else if (this.useLocalProxy) {
         const result = await this.callProxyForAnalysis(
           imageBase64,
           mimeType,
@@ -261,7 +293,7 @@ Chọn category phù hợp nhất dựa trên nội dung chính của ảnh.
           success: false,
           imagePath,
           error:
-            "Direct API not supported for analysis. Please use local proxy (OPENAI_API_BASE + OPENAI_API_KEY)",
+            "Direct API not supported for analysis. Please use Grok2API (GROK_API_BASE_URL + GROK_API_KEY) or local proxy (OPENAI_API_BASE + OPENAI_API_KEY)",
         };
       }
 
@@ -307,6 +339,93 @@ Chọn category phù hợp nhất dựa trên nội dung chính của ảnh.
         imagePath,
         error: error instanceof Error ? error.message : String(error),
       };
+    }
+  }
+
+  private async callGrok2APIForAnalysis(
+    imageBase64: string,
+    mimeType: string,
+    prompt: string,
+  ): Promise<{ text?: string; error?: string }> {
+    try {
+      // Grok2API uses OpenAI-compatible chat completions with vision
+      const requestBody = {
+        model: this.modelName,
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: prompt },
+              {
+                type: "image_url",
+                image_url: {
+                  url: `data:${mimeType};base64,${imageBase64}`,
+                },
+              },
+            ],
+          },
+        ],
+        max_tokens: 2000,
+        temperature: 0.7,
+        stream: false, // Disable streaming for easier parsing
+      };
+
+      const response = await fetch(
+        `${this.localProxyBaseUrl}/v1/chat/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.localProxyApiKey}`,
+          },
+          body: JSON.stringify(requestBody),
+        },
+      );
+
+      console.error(`DEBUG - Grok2API response status: ${response.status}`);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          `DEBUG - Grok2API error response: ${errorText.substring(0, 500)}`,
+        );
+        return { error: `Grok2API error: ${response.status} - ${errorText.substring(0, 200)}` };
+      }
+
+      const responseText = await response.text();
+      console.error(
+        `DEBUG - Grok2API raw response: ${responseText.substring(0, 500)}`,
+      );
+
+      const data = JSON.parse(responseText) as {
+        choices?: Array<{
+          message?: {
+            content?: string;
+          };
+        }>;
+        error?: {
+          message?: string;
+          type?: string;
+          code?: string;
+        };
+      };
+
+      // Check for error in response
+      if (data.error) {
+        console.error(
+          `DEBUG - Grok2API returned error: ${data.error.message}`,
+        );
+        return { error: data.error.message || "Unknown API error" };
+      }
+
+      if (data.choices?.[0]?.message?.content) {
+        return { text: data.choices[0].message.content };
+      }
+
+      return { error: "No text response from Grok2API analysis" };
+    } catch (error) {
+      console.error("DEBUG - Error calling Grok2API for analysis:", error);
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   }
 

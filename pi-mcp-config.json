@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "nanobanana": {
+      "command": "node",
+      "args": [
+        "/var/www/nanobanana/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "GROK_API_BASE_URL": "http://localhost:8011",
+        "GROK_API_KEY": "aa",
+        "GROK_IMAGE_MODEL": "grok-imagine-1.0-fast",
+        "GROK_EDIT_MODEL": "grok-imagine-1.0-edit",
+        "GROK_ANALYZER_MODEL": "grok-4.1-fast",
+        "IMAGE_OUTPUT_DIR": "/var/www/nanobanana/nanobanana-output"
+      },
+      "lifecycle": "lazy",
+      "idleTimeout": 5,
+      "exposeResources": false,
+      "directTools": false,
+      "showStderr": false
+    }
+  }
+}

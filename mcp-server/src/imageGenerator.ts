@@ -25,23 +25,35 @@ export class ImageGenerator {
   private ai: GoogleGenAI | null = null;
   private modelName: string;
   private useLocalProxy: boolean = false;
+  private useGrok2API: boolean = false;
   private localProxyBaseUrl: string = "";
   private localProxyApiKey: string = "";
   private static readonly DEFAULT_MODEL = "gemini-3-pro-image-preview";
+  private static readonly DEFAULT_GROK_IMAGE_MODEL = "grok-imagine-1.0-fast";
+  private static readonly DEFAULT_GROK_EDIT_MODEL = "grok-imagine-1.0-edit";
 
   constructor(authConfig: AuthConfig) {
-    if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
+    if (authConfig.keyType === "GROK2API" && authConfig.baseUrl) {
+      this.useGrok2API = true;
+      this.localProxyBaseUrl = authConfig.baseUrl;
+      this.localProxyApiKey = authConfig.apiKey;
+      console.error(`DEBUG - Using Grok2API at: ${this.localProxyBaseUrl}`);
+      this.modelName =
+        process.env.GROK_IMAGE_MODEL || ImageGenerator.DEFAULT_GROK_IMAGE_MODEL;
+    } else if (authConfig.keyType === "LOCAL_PROXY" && authConfig.baseUrl) {
       this.useLocalProxy = true;
       this.localProxyBaseUrl = authConfig.baseUrl;
       this.localProxyApiKey = authConfig.apiKey;
       console.error(`DEBUG - Using local proxy at: ${this.localProxyBaseUrl}`);
+      this.modelName =
+        process.env.NANOBANANA_MODEL || ImageGenerator.DEFAULT_MODEL;
     } else {
       this.ai = new GoogleGenAI({
         apiKey: authConfig.apiKey,
       });
+      this.modelName =
+        process.env.NANOBANANA_MODEL || ImageGenerator.DEFAULT_MODEL;
     }
-    this.modelName =
-      process.env.NANOBANANA_MODEL || ImageGenerator.DEFAULT_MODEL;
     console.error(`DEBUG - Using image model: ${this.modelName}`);
   }
 
@@ -71,6 +83,90 @@ export class ImageGenerator {
     } catch (error) {
       console.error("DEBUG - Error fetching models from proxy:", error);
       return null;
+    }
+  }
+
+  private async callGrok2API(
+    prompt: string,
+    imageBase64?: string,
+    mode: "generate" | "edit" = "generate",
+    size: ImageGenerationRequest["size"] = "1024x1024",
+    imageMimeType: string = "image/png",
+    imageFilename: string = "input.png",
+  ): Promise<{ imageData?: string; error?: string }> {
+    try {
+      const modelToUse =
+        mode === "edit"
+          ? process.env.GROK_EDIT_MODEL ||
+            ImageGenerator.DEFAULT_GROK_EDIT_MODEL
+          : process.env.GROK_IMAGE_MODEL ||
+            ImageGenerator.DEFAULT_GROK_IMAGE_MODEL;
+
+      console.error(`DEBUG - Using Grok2API model: ${modelToUse}`);
+
+      let response: Response;
+
+      if (mode === "edit" && imageBase64) {
+        const endpoint = `${this.localProxyBaseUrl}/v1/images/edits`;
+        const formData = new FormData();
+        const imageBuffer = Buffer.from(imageBase64, "base64");
+        const imageBlob = new Blob([imageBuffer], { type: imageMimeType });
+
+        formData.append("model", modelToUse);
+        formData.append("prompt", prompt);
+        formData.append("image", imageBlob, imageFilename);
+        formData.append("n", "1");
+        formData.append("size", size || "1024x1024");
+        formData.append("response_format", "b64_json");
+
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.localProxyApiKey}`,
+          },
+          body: formData,
+        });
+      } else {
+        const endpoint = `${this.localProxyBaseUrl}/v1/images/generations`;
+        const requestBody = {
+          model: modelToUse,
+          prompt: prompt,
+          n: 1,
+          size: size || "1024x1024",
+          response_format: "b64_json",
+        };
+
+        response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.localProxyApiKey}`,
+          },
+          body: JSON.stringify(requestBody),
+        });
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(
+          `DEBUG - Grok2API error: ${response.status} - ${errorText}`,
+        );
+        return { error: `Grok2API error: ${response.status}` };
+      }
+
+      const data = (await response.json()) as {
+        data?: Array<{ b64_json?: string; url?: string }>;
+      };
+      console.error("DEBUG - Grok2API response received");
+
+      if (data.data && data.data[0]?.b64_json) {
+        return { imageData: data.data[0].b64_json };
+      }
+
+      return { error: "No image data in Grok2API response" };
+    } catch (error) {
+      console.error("DEBUG - Error calling Grok2API:", error);
+      return { error: error instanceof Error ? error.message : String(error) };
     }
   }
 
@@ -237,7 +333,21 @@ export class ImageGenerator {
   }
 
   static validateAuthentication(): AuthConfig {
-    // Check for local proxy first (highest priority)
+    // Check for Grok2API first (highest priority)
+    const grokApiBase = process.env.GROK_API_BASE_URL;
+    const grokApiKey = process.env.GROK_API_KEY;
+    if (grokApiBase && grokApiKey) {
+      console.error(
+        "✓ Found GROK_API_BASE_URL + GROK_API_KEY (Grok2API mode)",
+      );
+      return {
+        apiKey: grokApiKey,
+        keyType: "GROK2API",
+        baseUrl: grokApiBase,
+      };
+    }
+
+    // Check for local proxy (Gemini format)
     const openaiApiBase = process.env.OPENAI_API_BASE;
     const openaiApiKey = process.env.OPENAI_API_KEY;
     if (openaiApiBase && openaiApiKey) {
@@ -286,6 +396,7 @@ export class ImageGenerator {
 
     throw new Error(
       "ERROR: No valid API key found. Please set one of:\n" +
+        "  - GROK_API_BASE_URL + GROK_API_KEY (for Grok2API)\n" +
         "  - OPENAI_API_BASE + OPENAI_API_KEY (for local proxy)\n" +
         "  - NANOBANANA_GEMINI_API_KEY\n" +
         "  - NANOBANANA_GOOGLE_API_KEY\n" +
@@ -420,7 +531,21 @@ export class ImageGenerator {
         try {
           let imageBase64: string | undefined;
 
-          if (this.useLocalProxy) {
+          if (this.useGrok2API) {
+            // Use Grok2API
+            const result = await this.callGrok2API(
+              currentPrompt,
+              undefined,
+              "generate",
+              request.size,
+            );
+            if (result.imageData) {
+              imageBase64 = result.imageData;
+              console.error("DEBUG - Found image data from Grok2API");
+            } else if (result.error) {
+              throw new Error(result.error);
+            }
+          } else if (this.useLocalProxy) {
             // Use local proxy API
             const result = await this.callLocalProxyAPI(currentPrompt, undefined, request.temperature);
             if (result.imageData) {
@@ -624,7 +749,23 @@ export class ImageGenerator {
         try {
           let imageBase64: string | undefined;
 
-          if (this.useLocalProxy) {
+          if (this.useGrok2API) {
+            // Use Grok2API
+            const result = await this.callGrok2API(
+              stepPrompt,
+              undefined,
+              "generate",
+              request.size,
+            );
+            if (result.imageData) {
+              imageBase64 = result.imageData;
+              console.error(
+                `DEBUG - Found step ${stepNumber} image from Grok2API`,
+              );
+            } else if (result.error) {
+              throw new Error(result.error);
+            }
+          } else if (this.useLocalProxy) {
             // Use local proxy API
             const result = await this.callLocalProxyAPI(stepPrompt, undefined, request.temperature);
             if (result.imageData) {
@@ -759,13 +900,42 @@ export class ImageGenerator {
       }
 
       const outputPath = FileHandler.ensureOutputDirectory();
-      const inputImageBase64 = await FileHandler.readImageAsBase64(
-        fileResult.filePath!,
-      );
+      const inputImagePath = fileResult.filePath!;
+      const inputImageBase64 = await FileHandler.readImageAsBase64(inputImagePath);
+      const inputExt = inputImagePath.split(".").pop()?.toLowerCase() || "png";
+      const inputMimeType =
+        inputExt === "jpg" || inputExt === "jpeg"
+          ? "image/jpeg"
+          : inputExt === "webp"
+            ? "image/webp"
+            : inputExt === "gif"
+              ? "image/gif"
+              : "image/png";
+      const inputFilename = `input.${inputExt}`;
 
       let resultImageBase64: string | undefined;
 
-      if (this.useLocalProxy) {
+      if (this.useGrok2API) {
+        // Use Grok2API with image editing
+        const result = await this.callGrok2API(
+          request.prompt,
+          inputImageBase64,
+          "edit",
+          request.size,
+          inputMimeType,
+          inputFilename,
+        );
+        if (result.imageData) {
+          resultImageBase64 = result.imageData;
+          console.error("DEBUG - Found edited image from Grok2API");
+        } else if (result.error) {
+          return {
+            success: false,
+            message: `Failed to ${request.mode} image`,
+            error: result.error,
+          };
+        }
+      } else if (this.useLocalProxy) {
         // Use local proxy API with image
         const result = await this.callLocalProxyAPI(
           request.prompt,

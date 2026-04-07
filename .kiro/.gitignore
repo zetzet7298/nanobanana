@@ -1,0 +1,15 @@
+# Ignore environment files with secrets
+.env
+*.env.local
+
+# Ignore user-specific settings
+settings/user-*.json
+
+# Ignore logs
+*.log
+logs/
+
+# Ignore temporary files
+*.tmp
+*.temp
+.DS_Store
