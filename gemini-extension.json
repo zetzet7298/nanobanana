@@ -4,9 +4,15 @@
   "description": "Gemini CLI extension for Nano Banana models - generate and manipulate images with text prompts",
   "mcpServers": {
     "nanobanana": {
-      "command": "node",
+      "command": "/usr/bin/node",
       "args": ["${extensionPath}/mcp-server/dist/index.js"],
-      "env": {}
+      "env": {
+        "OPENAI_API_BASE": "http://localhost:8317",
+        "OPENAI_API_KEY": "etta-cliproxy-shared-key-2025",
+        "NANOBANANA_MODEL": "gemini-3-pro-image-preview",
+        "NANOBANANA_ANALYZER_MODEL": "gemini-3-flash-preview",
+        "NANOBANANA_ENHANCER_MODEL": "gemini-3-pro-image-preview"
+      }
     }
   },
   "contextFileName": "GEMINI.md"
