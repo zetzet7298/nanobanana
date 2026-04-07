@@ -1,17 +1,4 @@
 {
   "nextId": 12,
-  "tasks": [
-    {
-      "id": "11",
-      "subject": "Patch Grok2API edit final-image selection",
-      "description": "Fix Grok2API image edit collection to prefer final edited images over part-0 preview assets, then restart the container and retest Nanobanana edit/restore/enhance tools.",
-      "status": "completed",
-      "activeForm": "Patching edit final-image selection",
-      "metadata": {},
-      "blocks": [],
-      "blockedBy": [],
-      "createdAt": 1775581141621,
-      "updatedAt": 1775581247409
-    }
-  ]
+  "tasks": []
 }
